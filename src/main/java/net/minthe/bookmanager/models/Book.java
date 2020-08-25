@@ -6,19 +6,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "books")
 public class Book {
   @Id public int id;
+
   @Column(name = "author_id")
   public int authorId;
+
   @JoinColumn(name = "author_id", insertable = false, updatable = false)
-  @ManyToOne public Author author;
+  @ManyToOne
+  public Author author;
+
   public Instant createdAt;
   public Instant updatedAt;
 }
