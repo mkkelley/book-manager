@@ -7,12 +7,11 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'client';
   public isMenuCollapsed = false;
 
   constructor(private authenticationService: AuthenticationService) {}
 
-  get username(): string {
+  public username(): string {
     return this.authenticationService.getUsername();
   }
 }

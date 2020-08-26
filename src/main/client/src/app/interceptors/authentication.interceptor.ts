@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -16,18 +17,21 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const token = this.authenticationService.getSessionId();
-    // request.headers.set('X-Auth-Token', token);
-    let newRequest;
-    if (token != null) {
-      newRequest = request.clone({
-        setHeaders: {
-          'X-Auth-Token': token,
-        },
-      });
-    } else {
-      newRequest = request;
-    }
-    return next.handle(newRequest);
+    return this.authenticationService.loading$.pipe(
+      filter((x) => x === false),
+      map(() => {
+        const token = this.authenticationService.getSessionId();
+        if (token != null) {
+          return request.clone({
+            setHeaders: {
+              'X-Auth-Token': token,
+            },
+          });
+        } else {
+          return request;
+        }
+      }),
+      mergeMap((newRequest) => next.handle(newRequest))
+    );
   }
 }
