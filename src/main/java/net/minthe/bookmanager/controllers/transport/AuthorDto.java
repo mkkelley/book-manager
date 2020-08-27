@@ -1,5 +1,6 @@
 package net.minthe.bookmanager.controllers.transport;
 
+import java.time.Instant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import net.minthe.bookmanager.models.Author;
 @Setter
 @NoArgsConstructor
 public class AuthorDto {
-  private int id;
+  private long id;
   private String name;
   private long createdAt;
   private Long updatedAt;
@@ -18,6 +19,6 @@ public class AuthorDto {
     id = author.getId();
     name = author.getName();
     createdAt = author.getCreatedAt().toEpochMilli();
-    updatedAt = author.getUpdatedAt() != null ? author.getUpdatedAt().toEpochMilli() : null;
+    updatedAt = author.getUpdatedAt().map(Instant::toEpochMilli).orElse(null);
   }
 }

@@ -16,6 +16,7 @@ import org.springframework.session.web.http.HttpSessionIdResolver;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
 @EnableRedisHttpSession
@@ -28,6 +29,14 @@ public class BookManagerApplication {
   @Bean
   public HttpSessionIdResolver httpSessionIdResolver() {
     return HeaderHttpSessionIdResolver.xAuthToken();
+  }
+
+  @Bean
+  public CommonsRequestLoggingFilter loggingFilter() {
+    CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
+    filter.setIncludeClientInfo(true);
+    filter.setIncludeQueryString(true);
+    return filter;
   }
 
   @Configuration()

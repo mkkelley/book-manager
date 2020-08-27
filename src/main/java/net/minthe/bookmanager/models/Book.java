@@ -14,8 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "books")
-public class Book {
-  @Id private int id;
+public class Book extends Auditable {
+  @Id private Long id;
   private String title;
 
   @Column(name = "author_id")
@@ -26,6 +26,4 @@ public class Book {
   private Author author;
 
   private Instant published;
-  private Instant createdAt;
-  private Instant updatedAt;
 }
