@@ -18,7 +18,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     return this.authenticationService.loading$.pipe(
-      filter((x) => x === false),
+      filter((loading) => {
+        if (request.headers.get('Authorization') != null) {
+          return true;
+        }
+        return !loading;
+      }),
       map(() => {
         const token = this.authenticationService.getSessionId();
         if (token != null) {

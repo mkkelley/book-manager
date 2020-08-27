@@ -1,1 +1,18 @@
 <p>book-index works!</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Published</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of (books$ | async).content">
+      <td>{{ book.title }}</td>
+      <td>{{ book.author.name }}</td>
+      <td>{{ book.published | date }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,6 +1,6 @@
 package net.minthe.bookmanager.controllers;
 
-import net.minthe.bookmanager.models.Book;
+import net.minthe.bookmanager.controllers.transport.BookDto;
 import net.minthe.bookmanager.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +19,8 @@ public class BookController {
   }
 
   @GetMapping()
-  public Page<Book> getBooks(
+  public Page<BookDto> getBooks(
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
-    return bookService.getBooks(PageRequest.of(page, size));
+    return bookService.getBooks(PageRequest.of(page, size)).map(BookDto::new);
   }
 }

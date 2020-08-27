@@ -47,8 +47,15 @@ export class AuthenticationService {
     }
   }
 
-  public get loading$() {
+  public get loading$(): Observable<boolean> {
     return this.loadingSubject;
+  }
+
+  public authenticated(): boolean {
+    return (
+      this.sessionId != null &&
+      new Date().getTime() - this.timestamp < this.FIFTEEN_MINUTES_IN_MS
+    );
   }
 
   private loadInitialState(token, time, xxx: ProgressEvent<XMLHttpRequest>) {
@@ -62,7 +69,7 @@ export class AuthenticationService {
   public getSessionId(): string | null {
     const currentTime = new Date().getTime();
     if (currentTime - this.timestamp > this.FIFTEEN_MINUTES_IN_MS) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
       return null;
     }
     this.timestamp = currentTime;

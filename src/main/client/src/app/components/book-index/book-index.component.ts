@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {BookService} from '../../services/book.service';
+import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../services/book.service';
+import { PagedResult } from '../../models/paged-result';
+import { Book } from '../../models/book';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-book-index',
@@ -7,10 +10,11 @@ import {BookService} from '../../services/book.service';
   styleUrls: ['./book-index.component.scss'],
 })
 export class BookIndexComponent implements OnInit {
-  constructor(private bookService: BookService) {
-  }
+  public books$: Observable<PagedResult<Book>>;
+
+  constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
-    this.bookService.getBooks().subscribe(x => console.log(x));
+    this.books$ = this.bookService.getBooks();
   }
 }

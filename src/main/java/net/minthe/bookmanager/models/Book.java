@@ -15,15 +15,17 @@ import lombok.Setter;
 @Setter
 @Table(name = "books")
 public class Book {
-  @Id public int id;
+  @Id private int id;
+  private String title;
 
   @Column(name = "author_id")
-  public int authorId;
+  private int authorId;
 
   @JoinColumn(name = "author_id", insertable = false, updatable = false)
   @ManyToOne
-  public Author author;
+  private Author author;
 
-  public Instant createdAt;
-  public Instant updatedAt;
+  private Instant published;
+  private Instant createdAt;
+  private Instant updatedAt;
 }
