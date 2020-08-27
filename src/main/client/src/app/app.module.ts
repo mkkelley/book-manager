@@ -9,9 +9,10 @@ import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
+import { NewBookFormComponent } from './components/new-book-form/new-book-form.component';
 
 @NgModule({
-  declarations: [AppComponent, BookIndexComponent, LoginComponent],
+  declarations: [AppComponent, BookIndexComponent, LoginComponent, NewBookFormComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

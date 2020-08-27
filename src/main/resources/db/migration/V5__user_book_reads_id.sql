@@ -1,0 +1,1 @@
+alter table users_book_reads add id uuid primary key;

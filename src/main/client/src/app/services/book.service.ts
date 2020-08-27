@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PagedResult } from '../models/paged-result';
 import { Book } from '../models/book';
+import { AddBookRequest } from '../models/add-book-request';
 
 @Injectable({
   providedIn: 'root',
@@ -19,5 +20,12 @@ export class BookService {
       this.configurationService.getConfiguration().apiBaseUrl
     }books?page=${page}&size=${size}`;
     return this.httpClient.get<PagedResult<Book>>(route);
+  }
+
+  public createBook(request: AddBookRequest): Observable<Book> {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books`;
+    return this.httpClient.post<Book>(route, request);
   }
 }

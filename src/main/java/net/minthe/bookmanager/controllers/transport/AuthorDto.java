@@ -10,9 +10,9 @@ import net.minthe.bookmanager.models.Author;
 @Setter
 @NoArgsConstructor
 public class AuthorDto {
-  private long id;
+  private Long id;
   private String name;
-  private long createdAt;
+  private Long createdAt;
   private Long updatedAt;
 
   public AuthorDto(Author author) {

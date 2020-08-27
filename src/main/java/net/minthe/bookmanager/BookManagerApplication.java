@@ -2,10 +2,13 @@ package net.minthe.bookmanager;
 
 import java.util.Collections;
 import javax.sql.DataSource;
+import net.minthe.bookmanager.models.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +23,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
 @EnableRedisHttpSession
+@EnableJpaAuditing
 public class BookManagerApplication {
 
   public static void main(String[] args) {
@@ -37,6 +41,11 @@ public class BookManagerApplication {
     filter.setIncludeClientInfo(true);
     filter.setIncludeQueryString(true);
     return filter;
+  }
+
+  @Bean
+  public AuditorAware<User> auditorAware() {
+    return new AuditorUser();
   }
 
   @Configuration()
@@ -60,7 +69,9 @@ public class BookManagerApplication {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      http.cors()
+      http.csrf()
+          .disable()
+          .cors()
           .configurationSource(corsConfigurationSource())
           .and()
           .httpBasic()
