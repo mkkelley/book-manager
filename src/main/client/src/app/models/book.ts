@@ -1,4 +1,5 @@
 import { Author } from './author';
+import { BookRead } from './book-read';
 
 export class Book {
   id: number;
@@ -6,4 +7,5 @@ export class Book {
   author: Author;
   createdAt: number;
   published: number;
+  bookReads: BookRead[];
 }

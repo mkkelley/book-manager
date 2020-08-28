@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { PagedResult } from '../models/paged-result';
 import { Book } from '../models/book';
 import { AddBookRequest } from '../models/add-book-request';
+import { AddBookReadRequest } from '../models/add-book-read-request';
+import { BookRead } from '../models/book-read';
+import { FinishBookReadRequest } from '../models/finish-book-read-request';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +30,29 @@ export class BookService {
       this.configurationService.getConfiguration().apiBaseUrl
     }books`;
     return this.httpClient.post<Book>(route, request);
+  }
+
+  public createBookRead(request: AddBookReadRequest): Observable<BookRead> {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books/${request.bookId}/reads`;
+    return this.httpClient.post<BookRead>(route, request);
+  }
+
+  public finishBookRead(
+    bookId: number,
+    request: FinishBookReadRequest
+  ): Observable<BookRead> {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books/${bookId}/reads/${request.id}/finish`;
+    return this.httpClient.post<BookRead>(route, request);
+  }
+
+  public deleteBookRead(bookId: number, id: string) {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books/${bookId}/reads/${id}`;
+    return this.httpClient.delete<BookRead>(route);
   }
 }

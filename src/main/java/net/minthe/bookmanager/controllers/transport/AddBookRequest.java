@@ -1,6 +1,7 @@
 package net.minthe.bookmanager.controllers.transport;
 
 import java.util.Optional;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AddBookRequest {
-  @NotNull
-  private String title;
-  @NotNull
-  private String authorName;
+  @NotNull @NotEmpty private String title;
+  @NotNull @NotEmpty private String authorName;
   private Long published;
 
   public Optional<Long> getPublished() {

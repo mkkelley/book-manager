@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Long> {
   List<Author> findByNameOrderById(String name);
+  List<Author> findByNameContainingIgnoreCaseOrderByName(String name);
 }

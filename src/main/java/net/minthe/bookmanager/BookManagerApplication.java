@@ -53,7 +53,7 @@ public class BookManagerApplication {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+      configuration.setAllowedOrigins(Collections.singletonList("*"));
       configuration.setAllowedMethods(Collections.singletonList("*"));
       configuration.setAllowedHeaders(Collections.singletonList("*"));
       configuration.setExposedHeaders(Collections.singletonList("X-Auth-Token"));

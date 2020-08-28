@@ -1,6 +1,7 @@
 package net.minthe.bookmanager.models;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,8 +31,17 @@ public class BookRead extends Auditable {
   private Book book;
 
   @Column(name = "book_id")
-  private int bookId;
+  private Long bookId;
 
   private Instant started;
   private Instant finished;
+  private boolean audiobook;
+
+  public Optional<Instant> getStarted() {
+    return Optional.ofNullable(started);
+  }
+
+  public Optional<Instant> getFinished() {
+    return Optional.ofNullable(finished);
+  }
 }

@@ -10,9 +10,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import { NewBookFormComponent } from './components/new-book-form/new-book-form.component';
+import { BookReadComponent } from './components/book-read/book-read.component';
 
 @NgModule({
-  declarations: [AppComponent, BookIndexComponent, LoginComponent, NewBookFormComponent],
+  declarations: [AppComponent, BookIndexComponent, LoginComponent, NewBookFormComponent, BookReadComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
