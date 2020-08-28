@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Configuration} from '../models/configuration';
+import { Injectable } from '@angular/core';
+import { Configuration } from '../models/configuration';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigurationService {
-  constructor() {
-  }
+  constructor() {}
 
   public getConfiguration(): Configuration {
     return {
-      apiBaseUrl: "http://localhost:8080/"
-    }
+      apiBaseUrl: environment.apiBaseUrl,
+    };
   }
 }
