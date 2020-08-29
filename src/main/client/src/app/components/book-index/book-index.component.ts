@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { BookService } from '../../services/book.service';
-import { PagedResult } from '../../models/paged-result';
-import { Book } from '../../models/book';
-import { Observable } from 'rxjs';
-import { AddBookRequest } from '../../models/add-book-request';
-import { AddBookReadRequest } from '../../models/add-book-read-request';
-import { v4 as uuidv4 } from 'uuid';
-import { FinishBookReadRequest } from '../../models/finish-book-read-request';
+import {Component, OnInit} from '@angular/core';
+import {BookService} from '../../services/book.service';
+import {PagedResult} from '../../models/paged-result';
+import {Book} from '../../models/book';
+import {Observable} from 'rxjs';
+import {AddBookRequest} from '../../models/add-book-request';
 
 @Component({
   selector: 'app-book-index',
@@ -15,9 +12,10 @@ import { FinishBookReadRequest } from '../../models/finish-book-read-request';
 })
 export class BookIndexComponent implements OnInit {
   public books$: Observable<PagedResult<Book>>;
-  public newBooks: {}[];
+  public newBooks: { created: boolean; book: Book }[];
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService) {
+  }
 
   ngOnInit(): void {
     this.books$ = this.bookService.getBooks();
@@ -25,33 +23,15 @@ export class BookIndexComponent implements OnInit {
   }
 
   newBook(): void {
-    this.newBooks.push({});
+    this.newBooks.push({created: false, book: null});
   }
 
   createBook(x: any, request: AddBookRequest) {
-    this.bookService.createBook(request).subscribe();
-    this.newBooks = this.newBooks.filter((nb) => nb !== x);
-  }
-
-  newBookRead(bookId: number, audiobook: boolean) {
-    const request: AddBookReadRequest = {
-      audiobook: audiobook,
-      id: uuidv4(),
-      bookId: bookId,
-      started: new Date().getTime(),
-    };
-    this.bookService.createBookRead(request).subscribe();
-  }
-
-  finishBookRead(id: string, bookId: number) {
-    const request: FinishBookReadRequest = {
-      finished: new Date().getTime(),
-      id: id,
-    };
-    this.bookService.finishBookRead(bookId, request).subscribe();
-  }
-
-  deleteBookRead(id: string, bookId: number) {
-    this.bookService.deleteBookRead(bookId, id).subscribe();
+    this.bookService.createBook(request).subscribe((book) => {
+      const newBook = this.newBooks.find((nb) => nb === x);
+      newBook.book = book;
+      newBook.created = true;
+      this.newBooks = [...this.newBooks];
+    });
   }
 }

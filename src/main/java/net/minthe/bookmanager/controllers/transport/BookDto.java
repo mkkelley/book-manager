@@ -1,6 +1,7 @@
 package net.minthe.bookmanager.controllers.transport;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -28,13 +29,15 @@ public class BookDto {
     createdAt = book.getCreatedAt().toEpochMilli();
     updatedAt = book.getUpdatedAt().map(Instant::toEpochMilli).orElse(null);
     bookReads =
-        book.getBookReads().stream()
-            .sorted(
-                (a, b) ->
-                    a.getStarted()
-                        .flatMap(first -> b.getStarted().map(first::compareTo))
-                        .orElse(-1))
-            .map(BookReadDto::new)
-            .collect(Collectors.toList());
+        book.getBookReads() != null
+            ? book.getBookReads().stream()
+                .sorted(
+                    (a, b) ->
+                        a.getStarted()
+                            .flatMap(first -> b.getStarted().map(first::compareTo))
+                            .orElse(-1))
+                .map(BookReadDto::new)
+                .collect(Collectors.toList())
+            : new ArrayList<>();
   }
 }
