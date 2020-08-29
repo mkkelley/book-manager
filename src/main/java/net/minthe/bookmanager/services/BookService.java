@@ -11,6 +11,7 @@ import net.minthe.bookmanager.models.BookRead;
 import net.minthe.bookmanager.repositories.AuthorRepository;
 import net.minthe.bookmanager.repositories.BookReadRepository;
 import net.minthe.bookmanager.repositories.BookRepository;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,10 @@ public class BookService {
     return bookRepository.getBooksByOrderByCreatedAtDesc(pageable);
   }
 
+  public Page<Book> searchBooks(String search, Pageable pageable) {
+    return bookRepository.getBooksByTitleContainingIgnoreCaseOrderByCreatedAtDesc(search, pageable);
+  }
+
   public Book addBook(AddBookRequest request) {
     var authors = authorRepository.findByNameOrderById(request.getAuthorName());
     Author author;
@@ -56,14 +61,15 @@ public class BookService {
     return bookRepository.findById(book.getId()).get();
   }
 
-  public BookRead addBookRead(AddBookReadRequest request) {
-    var bookOpt = bookRepository.findById(request.getBookId());
-    if (bookOpt.isEmpty()) {
-      throw BadRequest.create(
-          HttpStatus.BAD_REQUEST, "id does not exist", HttpHeaders.EMPTY, null, null);
-    }
+  public Book deleteBook(Long id) {
+    var book = bookRepository.findById(id).orElseThrow();
+    Hibernate.initialize(book.getAuthor());
+    Hibernate.initialize(book.getBookReads());
+    bookRepository.deleteById(id);
+    return book;
+  }
 
-    var book = bookOpt.get();
+  public BookRead addBookRead(AddBookReadRequest request) {
     var newRead = new BookRead();
     newRead.setAudiobook(request.isAudiobook());
     newRead.setBookId(request.getBookId());

@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {BookService} from '../../services/book.service';
-import {PagedResult} from '../../models/paged-result';
-import {Book} from '../../models/book';
-import {Observable} from 'rxjs';
-import {AddBookRequest} from '../../models/add-book-request';
+import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../services/book.service';
+import { PagedResult } from '../../models/paged-result';
+import { Book } from '../../models/book';
+import { Observable } from 'rxjs';
+import { AddBookRequest } from '../../models/add-book-request';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-book-index',
@@ -13,17 +14,33 @@ import {AddBookRequest} from '../../models/add-book-request';
 export class BookIndexComponent implements OnInit {
   public books$: Observable<PagedResult<Book>>;
   public newBooks: { created: boolean; book: Book }[];
+  public page = 0;
+  public size = 20;
 
-  constructor(private bookService: BookService) {
+  constructor(private bookService: BookService, private route: ActivatedRoute) {
+    route.queryParamMap.subscribe((paramMap) => {
+      console.log(paramMap);
+      if (paramMap.has('page')) {
+        this.page = +paramMap.get('page');
+      }
+      if (paramMap.has('size')) {
+        this.size = +paramMap.get('size');
+      }
+      this.changePage();
+    });
   }
 
   ngOnInit(): void {
-    this.books$ = this.bookService.getBooks();
+    this.newBooks = [];
+  }
+
+  changePage(): void {
+    this.books$ = this.bookService.getBooks(this.page, this.size);
     this.newBooks = [];
   }
 
   newBook(): void {
-    this.newBooks.push({created: false, book: null});
+    this.newBooks.push({ created: false, book: null });
   }
 
   createBook(x: any, request: AddBookRequest) {
@@ -32,6 +49,12 @@ export class BookIndexComponent implements OnInit {
       newBook.book = book;
       newBook.created = true;
       this.newBooks = [...this.newBooks];
+    });
+  }
+
+  deleteBook(id: number) {
+    this.bookService.deleteBook(id).subscribe(() => {
+      this.changePage();
     });
   }
 }

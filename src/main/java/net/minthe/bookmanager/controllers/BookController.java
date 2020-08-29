@@ -1,5 +1,6 @@
 package net.minthe.bookmanager.controllers;
 
+import java.util.Optional;
 import java.util.UUID;
 import net.minthe.bookmanager.controllers.transport.AddBookReadRequest;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
@@ -29,14 +30,25 @@ public class BookController {
 
   @GetMapping()
   public Page<BookDto> getBooks(
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
-    return bookService.getBooks(PageRequest.of(page, size)).map(BookDto::new);
+      @RequestParam(required = false) Optional<String> search,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
+    var pageRequest = PageRequest.of(page, size);
+    return search
+        .map(s -> bookService.searchBooks(s, pageRequest))
+        .orElseGet(() -> bookService.getBooks(pageRequest))
+        .map(BookDto::new);
   }
 
   @PostMapping()
   public BookDto addBook(@RequestBody AddBookRequest request) {
     var book = bookService.addBook(request);
     return new BookDto(book);
+  }
+
+  @DeleteMapping("{bookId}")
+  public BookDto deleteBook(@PathVariable Long bookId) {
+    return new BookDto(bookService.deleteBook(bookId));
   }
 
   @PostMapping("{bookId}/reads")

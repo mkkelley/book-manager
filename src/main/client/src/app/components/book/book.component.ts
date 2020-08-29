@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Book } from '../../models/book';
 import { AddBookReadRequest } from '../../models/add-book-read-request';
 import { FinishBookReadRequest } from '../../models/finish-book-read-request';
@@ -12,6 +12,7 @@ import { BookService } from '../../services/book.service';
 })
 export class BookComponent implements OnInit {
   @Input() book: Book;
+  @Output() deleteBook = new EventEmitter<number>();
 
   constructor(private bookService: BookService) {}
 
@@ -24,7 +25,7 @@ export class BookComponent implements OnInit {
       bookId: bookId,
       started: new Date().getTime(),
     };
-    this.bookService.createBookRead(request).subscribe(bookRead => {
+    this.bookService.createBookRead(request).subscribe((bookRead) => {
       this.book.bookReads = [...this.book.bookReads, bookRead];
     });
   }
@@ -45,5 +46,9 @@ export class BookComponent implements OnInit {
     this.bookService.deleteBookRead(bookId, id).subscribe(() => {
       this.book.bookReads = this.book.bookReads.filter((br) => br.id !== id);
     });
+  }
+
+  delete() {
+    this.deleteBook.emit(this.book.id);
   }
 }

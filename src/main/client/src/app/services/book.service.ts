@@ -32,6 +32,13 @@ export class BookService {
     return this.httpClient.post<Book>(route, request);
   }
 
+  public deleteBook(id: number): Observable<Book> {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books/${id}`;
+    return this.httpClient.delete<Book>(route);
+  }
+
   public createBookRead(request: AddBookReadRequest): Observable<BookRead> {
     const route = `${
       this.configurationService.getConfiguration().apiBaseUrl

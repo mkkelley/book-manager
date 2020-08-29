@@ -4,11 +4,17 @@
       <th>Title</th>
       <th>Author</th>
       <th>Published</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <ng-container *ngIf="books$ | async as books">
-      <tr app-book *ngFor="let book of books.content" [book]="book"></tr>
+      <tr
+        app-book
+        *ngFor="let book of books.content"
+        [book]="book"
+        (deleteBook)="deleteBook($event)"
+      ></tr>
       <ng-container *ngFor="let x of newBooks">
         <tr
           app-new-book-form
@@ -16,7 +22,7 @@
           (newBook)="createBook(x, $event)"
         ></tr>
         <ng-template #createdBook>
-          <tr app-book [book]="x.book"></tr>
+          <tr app-book [book]="x.book" (deleteBook)="deleteBook($event)"></tr>
         </ng-template>
       </ng-container>
       <tr>
@@ -44,6 +50,7 @@
             />
           </svg>
         </td>
+        <td></td>
         <td></td>
         <td></td>
       </tr>
