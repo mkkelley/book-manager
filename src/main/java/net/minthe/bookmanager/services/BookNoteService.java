@@ -24,7 +24,6 @@ public class BookNoteService {
     bookNote.setBookId(request.getBookId());
     bookNote.setUsername(authService.isAdmin() ? request.getUsername() : authService.getUsername());
     bookNote.setNotes(request.getNotes());
-    request.notify();
     return bookNoteRepository.save(bookNote);
   }
 }

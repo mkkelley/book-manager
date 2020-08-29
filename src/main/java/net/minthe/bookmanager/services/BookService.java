@@ -21,6 +21,10 @@ public class BookService {
     this.authorRepository = authorRepository;
   }
 
+  public Book getBook(Long id) {
+    return this.bookRepository.findById(id).orElseThrow();
+  }
+
   public Page<Book> getBooks(Pageable pageable) {
     return bookRepository.getBooksByOrderByCreatedAtDesc(pageable);
   }

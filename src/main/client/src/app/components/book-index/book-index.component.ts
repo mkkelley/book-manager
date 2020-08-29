@@ -19,7 +19,6 @@ export class BookIndexComponent implements OnInit {
 
   constructor(private bookService: BookService, private route: ActivatedRoute) {
     route.queryParamMap.subscribe((paramMap) => {
-      console.log(paramMap);
       if (paramMap.has('page')) {
         this.page = +paramMap.get('page');
       }

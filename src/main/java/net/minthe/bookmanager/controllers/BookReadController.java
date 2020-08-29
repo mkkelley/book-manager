@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /** Created by Michael Kelley on 8/29/2020 */
+@RestController
 @RequestMapping("/books/{bookId}/reads")
 public class BookReadController {
   private final BookReadService bookReadService;
@@ -20,7 +22,7 @@ public class BookReadController {
     this.bookReadService = bookReadService;
   }
 
-  @PostMapping("{bookId}/reads")
+  @PostMapping
   public BookReadDto addBookRead(
       @PathVariable Long bookId, @RequestBody AddBookReadRequest request) {
     request.setBookId(bookId);
@@ -28,7 +30,7 @@ public class BookReadController {
     return new BookReadDto(bookRead);
   }
 
-  @PostMapping("{bookId}/reads/{bookReadId}/finish")
+  @PostMapping("{bookReadId}/finish")
   public BookReadDto finishBookRead(
       @PathVariable Long bookId,
       @PathVariable UUID bookReadId,
@@ -37,7 +39,7 @@ public class BookReadController {
     return new BookReadDto(bookReadService.finishBookRead(request));
   }
 
-  @DeleteMapping("{bookId}/reads/{bookReadId}")
+  @DeleteMapping("{bookReadId}")
   public BookReadDto deleteBookRead(@PathVariable Long bookId, @PathVariable UUID bookReadId) {
     return new BookReadDto(bookReadService.deleteBookRead(bookReadId));
   }

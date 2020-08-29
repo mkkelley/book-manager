@@ -1,5 +1,7 @@
 <td>
-  <div>{{ book.title }}</div>
+  <div>
+    <a [routerLink]="[book.id]">{{ book.title }}</a>
+  </div>
   <div *ngFor="let read of book.bookReads">
     <app-book-read
       [bookRead]="read"

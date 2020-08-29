@@ -46,4 +46,8 @@ public class Book extends Auditable {
   private List<BookRead> bookReads;
 
   private Instant published;
+
+  @OneToMany(mappedBy = "bookId")
+  @BatchSize(size = 20)
+  private List<BookNote> bookNotes;
 }

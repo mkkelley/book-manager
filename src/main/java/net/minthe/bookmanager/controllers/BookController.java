@@ -1,12 +1,9 @@
 package net.minthe.bookmanager.controllers;
 
 import java.util.Optional;
-import java.util.UUID;
-import net.minthe.bookmanager.controllers.transport.AddBookReadRequest;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
+import net.minthe.bookmanager.controllers.transport.BookDetailDto;
 import net.minthe.bookmanager.controllers.transport.BookDto;
-import net.minthe.bookmanager.controllers.transport.BookReadDto;
-import net.minthe.bookmanager.controllers.transport.FinishBookReadRequest;
 import net.minthe.bookmanager.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +35,11 @@ public class BookController {
         .map(s -> bookService.searchBooks(s, pageRequest))
         .orElseGet(() -> bookService.getBooks(pageRequest))
         .map(BookDto::new);
+  }
+
+  @GetMapping("{bookId}")
+  public BookDetailDto getBook(@PathVariable Long bookId) {
+    return new BookDetailDto(bookService.getBook(bookId));
   }
 
   @PostMapping()

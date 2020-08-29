@@ -1,0 +1,30 @@
+<h4>{{ book.title }}</h4>
+<h5>{{ book.author.name }}</h5>
+<div *ngIf="book.published">
+  {{ book.published | date }}
+</div>
+
+<div *ngFor="let read of book.bookReads">
+  <app-book-read
+    (delete)="deleteRead(read.id)"
+    [bookRead]="read"
+    (finish)="finishRead(read.id)"
+  >
+  </app-book-read>
+</div>
+
+<div *ngFor="let note of book.notes" class="card mb-3">
+  <div class="card-body">
+    {{ note.notes }}
+  </div>
+  <div class="card-footer d-flex flex-row justify-content-between">
+    <div class="text-muted">
+      {{ note.createdBy }}
+    </div>
+    <div class="text-muted">
+      {{ note.createdAt | date: "medium" }}
+    </div>
+  </div>
+</div>
+
+<app-book-note-form (note)="createNote($event)"></app-book-note-form>

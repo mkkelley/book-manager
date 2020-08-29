@@ -14,7 +14,6 @@ export class AuthorService {
   ) {}
 
   public getAuthorTypeahead(input: string): Observable<Author[]> {
-    console.log('ta', input);
     const route = `${
       this.configurationService.getConfiguration().apiBaseUrl
     }authors/typeahead?author=${encodeURIComponent(input)}`;

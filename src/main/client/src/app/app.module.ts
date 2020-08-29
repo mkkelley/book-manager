@@ -12,9 +12,11 @@ import { AuthenticationInterceptor } from './interceptors/authentication.interce
 import { NewBookFormComponent } from './components/new-book-form/new-book-form.component';
 import { BookReadComponent } from './components/book-read/book-read.component';
 import { BookComponent } from './components/book/book.component';
+import { BookDetailComponent } from './components/book-detail/book-detail.component';
+import { BookNoteFormComponent } from './components/book-note-form/book-note-form.component';
 
 @NgModule({
-  declarations: [AppComponent, BookIndexComponent, LoginComponent, NewBookFormComponent, BookReadComponent, BookComponent],
+  declarations: [AppComponent, BookIndexComponent, LoginComponent, NewBookFormComponent, BookReadComponent, BookComponent, BookDetailComponent, BookNoteFormComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
