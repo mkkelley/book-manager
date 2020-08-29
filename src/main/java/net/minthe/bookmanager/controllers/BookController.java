@@ -50,26 +50,4 @@ public class BookController {
   public BookDto deleteBook(@PathVariable Long bookId) {
     return new BookDto(bookService.deleteBook(bookId));
   }
-
-  @PostMapping("{bookId}/reads")
-  public BookReadDto addBookRead(
-      @PathVariable Long bookId, @RequestBody AddBookReadRequest request) {
-    request.setBookId(bookId);
-    var bookRead = bookService.addBookRead(request);
-    return new BookReadDto(bookRead);
-  }
-
-  @PostMapping("{bookId}/reads/{bookReadId}/finish")
-  public BookReadDto finishBookRead(
-      @PathVariable Long bookId,
-      @PathVariable UUID bookReadId,
-      @RequestBody FinishBookReadRequest request) {
-    request.setId(bookReadId);
-    return new BookReadDto(bookService.finishBookRead(request));
-  }
-
-  @DeleteMapping("{bookId}/reads/{bookReadId}")
-  public BookReadDto deleteBookRead(@PathVariable Long bookId, @PathVariable UUID bookReadId) {
-    return new BookReadDto(bookService.deleteBookRead(bookReadId));
-  }
 }
