@@ -24,7 +24,9 @@ export class BookComponent implements OnInit {
       bookId: bookId,
       started: new Date().getTime(),
     };
-    this.bookService.createBookRead(request).subscribe();
+    this.bookService.createBookRead(request).subscribe(bookRead => {
+      this.book.bookReads = [...this.book.bookReads, bookRead];
+    });
   }
 
   finishBookRead(id: string, bookId: number) {
@@ -32,10 +34,16 @@ export class BookComponent implements OnInit {
       finished: new Date().getTime(),
       id: id,
     };
-    this.bookService.finishBookRead(bookId, request).subscribe();
+    this.bookService.finishBookRead(bookId, request).subscribe((bookRead) => {
+      const r = this.book.bookReads.find((read) => read.id === bookRead.id);
+      r.finished = bookRead.finished;
+      this.book.bookReads = [...this.book.bookReads];
+    });
   }
 
   deleteBookRead(id: string, bookId: number) {
-    this.bookService.deleteBookRead(bookId, id).subscribe();
+    this.bookService.deleteBookRead(bookId, id).subscribe(() => {
+      this.book.bookReads = this.book.bookReads.filter((br) => br.id !== id);
+    });
   }
 }
