@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewBookFormComponent } from './new-book-form.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('NewBookFormComponent', () => {
   let component: NewBookFormComponent;
@@ -8,9 +10,9 @@ describe('NewBookFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewBookFormComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, NgbModule],
+      declarations: [NewBookFormComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

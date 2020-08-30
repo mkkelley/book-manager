@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BookReadComponent } from './book-read.component';
+import {BookReadComponent} from './book-read.component';
 
 describe('BookReadComponent', () => {
   let component: BookReadComponent;
@@ -8,14 +8,21 @@ describe('BookReadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookReadComponent ]
-    })
-    .compileComponents();
+      declarations: [BookReadComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BookReadComponent);
     component = fixture.componentInstance;
+    component.bookRead = {
+      finished: new Date().getTime(),
+      id: 'asdf',
+      audiobook: true,
+      bookId: 123,
+      started: new Date().getTime(),
+      username: 'asdflkjasdfl',
+    };
     fixture.detectChanges();
   });
 
