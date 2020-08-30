@@ -1,14 +1,32 @@
-<ul class="list-group">
-  <li class="list-group-item d-flex flex-row justify-content-between">
+<ul class="list-group flex-row flex-grow-1">
+  <li
+    class="list-group-item d-flex flex-row justify-content-between flex-grow-1 flex-wrap"
+  >
     <div class="d-flex flex-row">
       <a [routerLink]="[book.id]">{{ book.title }}</a>
       <div class="ml-4">{{ book.author.name }}</div>
       <div class="ml-4" *ngIf="book.published != null">
-        {{ book.published }}
+        {{ book.published | date }}
       </div>
     </div>
-    <div>
-      <button class="close" (click)="delete()">&times;</button>
+    <div class="d-flex flex-row align-content-center">
+      <div class="form-check-inline">
+        <label for="audio-{{ book.id }}" class="form-check-label mr-1"
+          >Audio</label
+        >
+        <input
+          id="audio-{{ book.id }}"
+          class="form-check-input"
+          type="checkbox"
+          [formControl]="audiobookControl"
+        />
+      </div>
+      <div class="mr-lg-3 mr-md-2 mr-sm-1">
+        <button class="close" (click)="newBookRead()">+</button>
+      </div>
+      <div>
+        <button class="close" (click)="delete()">&times;</button>
+      </div>
     </div>
   </li>
 </ul>

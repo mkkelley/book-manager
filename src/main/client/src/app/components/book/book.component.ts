@@ -4,6 +4,7 @@ import { AddBookReadRequest } from '../../models/add-book-read-request';
 import { FinishBookReadRequest } from '../../models/finish-book-read-request';
 import { v4 as uuidv4 } from 'uuid';
 import { BookService } from '../../services/book.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-book',
@@ -14,11 +15,17 @@ export class BookComponent implements OnInit {
   @Input() book: Book;
   @Output() deleteBook = new EventEmitter<number>();
 
+  public audiobookControl: FormControl;
+
   constructor(private bookService: BookService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.audiobookControl = new FormControl(false);
+  }
 
-  newBookRead(bookId: number, audiobook: boolean) {
+  newBookRead() {
+    const bookId = this.book.id;
+    const audiobook = this.audiobookControl.value;
     const request: AddBookReadRequest = {
       audiobook: audiobook,
       id: uuidv4(),
