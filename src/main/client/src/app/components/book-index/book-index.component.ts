@@ -56,4 +56,8 @@ export class BookIndexComponent implements OnInit {
       this.changePage();
     });
   }
+
+  removeBookForm(newBook) {
+    this.newBooks = this.newBooks.filter((x) => x !== newBook);
+  }
 }

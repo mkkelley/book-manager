@@ -11,12 +11,13 @@ import {
 } from 'rxjs/operators';
 
 @Component({
-  selector: '[app-new-book-form]',
+  selector: 'app-new-book-form',
   templateUrl: './new-book-form.component.html',
   styleUrls: ['./new-book-form.component.scss'],
 })
 export class NewBookFormComponent implements OnInit {
   @Output() newBook = new EventEmitter<AddBookRequest>();
+  @Output() remove = new EventEmitter();
   bookForm: FormGroup;
 
   constructor(private authorService: AuthorService) {}
@@ -37,6 +38,10 @@ export class NewBookFormComponent implements OnInit {
       authorName: this.bookForm.controls.authorName.value,
       published: new Date(date.year, date.month - 1, date.day).getTime(),
     });
+  }
+
+  emitRemove() {
+    this.remove.emit();
   }
 
   typeahead(authorName$: Observable<string>): Observable<string[]> {

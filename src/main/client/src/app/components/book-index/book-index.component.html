@@ -1,59 +1,51 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Published</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="books$ | async as books">
-      <tr
-        app-book
-        *ngFor="let book of books.content"
-        [book]="book"
-        (deleteBook)="deleteBook($event)"
-      ></tr>
-      <ng-container *ngFor="let x of newBooks">
-        <tr
-          app-new-book-form
-          *ngIf="!x.created; else createdBook"
-          (newBook)="createBook(x, $event)"
-        ></tr>
-        <ng-template #createdBook>
-          <tr app-book [book]="x.book" (deleteBook)="deleteBook($event)"></tr>
-        </ng-template>
-      </ng-container>
-      <tr>
-        <td>
-          <svg
-            (click)="newBook()"
-            width="1em"
-            height="1em"
-            viewBox="0 0 16 16"
-            class="bi bi-plus-square ml-4"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"
-            />
-            <path
-              fill-rule="evenodd"
-              d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
-            />
-          </svg>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+<ng-container *ngIf="books$ | async as books">
+  <app-book
+    *ngFor="let book of books.content"
+    [book]="book"
+    (deleteBook)="deleteBook($event)"
+  ></app-book>
+  <ng-container *ngFor="let x of newBooks">
+    <app-new-book-form
+      *ngIf="!x.created; else createdBook"
+      (newBook)="createBook(x, $event)"
+      (remove)="removeBookForm(x)"
+    ></app-new-book-form>
+    <ng-template #createdBook>
+      <app-book [book]="x.book" (deleteBook)="deleteBook($event)"></app-book>
+    </ng-template>
+  </ng-container>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <button class="close float-left" (click)="newBook()">+</button>
+    </li>
+  </ul>
+  <!--  <tr>-->
+  <!--    <td>-->
+  <!--      <svg-->
+  <!--        (click)="newBook()"-->
+  <!--        width="1em"-->
+  <!--        height="1em"-->
+  <!--        viewBox="0 0 16 16"-->
+  <!--        class="bi bi-plus-square ml-4"-->
+  <!--        fill="currentColor"-->
+  <!--        xmlns="http://www.w3.org/2000/svg"-->
+  <!--      >-->
+  <!--        <path-->
+  <!--          fill-rule="evenodd"-->
+  <!--          d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"-->
+  <!--        />-->
+  <!--        <path-->
+  <!--          fill-rule="evenodd"-->
+  <!--          d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"-->
+  <!--        />-->
+  <!--        <path-->
+  <!--          fill-rule="evenodd"-->
+  <!--          d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"-->
+  <!--        />-->
+  <!--      </svg>-->
+  <!--    </td>-->
+  <!--    <td></td>-->
+  <!--    <td></td>-->
+  <!--    <td></td>-->
+  <!--  </tr>-->
+</ng-container>

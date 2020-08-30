@@ -3,5 +3,5 @@
   <a [routerLink]="" (click)="emitFinish()">Finish</a>
 </ng-container>
 <ng-template #finishedDate> {{ bookRead.finished | date }}</ng-template> |
-{{ bookRead.audiobook ? "Audio" : "Words" }} |
-<a [routerLink]="" (click)="emitDelete()">X</a>
+{{ bookRead.audiobook ? "Audio" : "Words" }}
+<button class="close" (click)="emitDelete()">&times;</button>

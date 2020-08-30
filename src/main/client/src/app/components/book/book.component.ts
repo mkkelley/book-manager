@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BookService } from '../../services/book.service';
 
 @Component({
-  selector: '[app-book]',
+  selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
 })

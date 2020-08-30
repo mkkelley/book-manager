@@ -1,12 +1,16 @@
 package net.minthe.bookmanager.services;
 
 import java.time.Instant;
+import java.util.ConcurrentModificationException;
+import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
 import net.minthe.bookmanager.models.Author;
 import net.minthe.bookmanager.models.Book;
 import net.minthe.bookmanager.repositories.AuthorRepository;
 import net.minthe.bookmanager.repositories.BookRepository;
 import org.hibernate.Hibernate;
+import org.hibernate.StaleStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,10 +19,15 @@ import org.springframework.stereotype.Service;
 public class BookService {
   private final BookRepository bookRepository;
   private final AuthorRepository authorRepository;
+  private final EntityManagerFactory entityManagerFactory;
 
-  public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
+  public BookService(
+      BookRepository bookRepository,
+      AuthorRepository authorRepository,
+      EntityManagerFactory entityManagerFactory) {
     this.bookRepository = bookRepository;
     this.authorRepository = authorRepository;
+    this.entityManagerFactory = entityManagerFactory;
   }
 
   public Book getBook(Long id) {
