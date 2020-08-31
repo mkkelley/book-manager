@@ -4,7 +4,7 @@ import { PagedResult } from '../../models/paged-result';
 import { Book } from '../../models/book';
 import { Observable } from 'rxjs';
 import { AddBookRequest } from '../../models/add-book-request';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-index',
@@ -15,9 +15,13 @@ export class BookIndexComponent implements OnInit {
   public books$: Observable<PagedResult<Book>>;
   public newBooks: { created: boolean; book: Book }[];
   public page = 0;
-  public size = 20;
+  public size = 5;
 
-  constructor(private bookService: BookService, private route: ActivatedRoute) {
+  constructor(
+    private bookService: BookService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     route.queryParamMap.subscribe((paramMap) => {
       if (paramMap.has('page')) {
         this.page = +paramMap.get('page');
@@ -36,6 +40,13 @@ export class BookIndexComponent implements OnInit {
   changePage(): void {
     this.books$ = this.bookService.getBooks(this.page, this.size);
     this.newBooks = [];
+    this.router.navigate([], {
+      queryParams: {
+        page: this.page,
+        size: this.size,
+      },
+      skipLocationChange: true,
+    });
   }
 
   newBook(): void {
@@ -59,5 +70,15 @@ export class BookIndexComponent implements OnInit {
 
   removeBookForm(newBook) {
     this.newBooks = this.newBooks.filter((x) => x !== newBook);
+  }
+
+  nextPage() {
+    this.page = this.page + 1;
+    this.changePage();
+  }
+
+  prevPage() {
+    this.page = this.page - 1;
+    this.changePage();
   }
 }

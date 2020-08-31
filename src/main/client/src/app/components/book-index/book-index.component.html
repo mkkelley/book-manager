@@ -19,4 +19,20 @@
       <button class="close float-left" (click)="newBook()">+</button>
     </li>
   </ul>
+  <div class="d-flex flex-row justify-content-between mt-2">
+    <button
+      [disabled]="books.first"
+      class="btn btn-outline-dark"
+      (click)="prevPage()"
+    >
+      Prev
+    </button>
+    <button
+      [disabled]="books.last"
+      class="btn btn-outline-dark"
+      (click)="nextPage()"
+    >
+      Next
+    </button>
+  </div>
 </ng-container>
