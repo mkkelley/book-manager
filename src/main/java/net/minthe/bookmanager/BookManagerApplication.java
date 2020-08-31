@@ -77,9 +77,9 @@ public class BookManagerApplication {
           .httpBasic()
           .and()
           .authorizeRequests()
-          .antMatchers("/index.html", "/", "/home", "/user")
+          .antMatchers("/index.html", "/", "/home", "/user", "/config", "/*.js", "/*.css")
           .permitAll()
-          .anyRequest()
+          .antMatchers("/api/**")
           .authenticated();
     }
   }

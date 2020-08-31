@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Created by Michael Kelley on 8/29/2020 */
 @RestController
-@RequestMapping("/books/{bookId}/reads")
+@RequestMapping("/api/books/{bookId}/reads")
 public class BookReadController {
   private final BookReadService bookReadService;
 

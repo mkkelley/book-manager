@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, finalize, first, map, tap } from 'rxjs/operators';
+import { catchError, filter, finalize, first, map, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '../models/authentication-response';
 import { Router } from '@angular/router';
 
@@ -31,17 +31,21 @@ export class AuthenticationService {
       storageToken != null &&
       currentTime - storageTimestamp < this.FIFTEEN_MINUTES_IN_MS
     ) {
-      const xhr = new XMLHttpRequest();
-      xhr.addEventListener(
-        'load',
-        this.loadInitialState.bind(this, storageToken, currentTime)
-      );
-      xhr.open(
-        'GET',
-        this.configurationService.getConfiguration().apiBaseUrl + 'user'
-      );
-      xhr.setRequestHeader('X-Auth-Token', storageToken);
-      xhr.send();
+      this.configurationService.loaded$
+        .pipe(filter((loaded) => loaded))
+        .subscribe(() => {
+          const xhr = new XMLHttpRequest();
+          xhr.addEventListener(
+            'load',
+            this.loadInitialState.bind(this, storageToken, currentTime)
+          );
+          xhr.open(
+            'GET',
+            this.configurationService.getConfiguration().apiBaseUrl + 'user'
+          );
+          xhr.setRequestHeader('X-Auth-Token', storageToken);
+          xhr.send();
+        });
     } else {
       this.loadingSubject.next(false);
     }

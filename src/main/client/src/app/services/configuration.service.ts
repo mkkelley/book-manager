@@ -1,16 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../models/configuration';
-import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigurationService {
-  constructor() {}
+  private config: Configuration;
+  private loaded = new BehaviorSubject<boolean>(false);
+
+  constructor() {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', this.loadConfiguration.bind(this));
+    xhr.open('GET', '/config');
+    xhr.send();
+  }
 
   public getConfiguration(): Configuration {
-    return {
-      apiBaseUrl: environment.apiBaseUrl,
-    };
+    return this.config;
+  }
+
+  public get loaded$() {
+    return this.loaded;
+  }
+
+  private loadConfiguration(event: ProgressEvent<XMLHttpRequest>) {
+    if (event.target.status == 200) {
+      this.config = JSON.parse(event.target.response);
+    } else {
+      this.config = {
+        apiBaseUrl: '',
+      };
+    }
+    this.loaded.next(true);
   }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Created by Michael Kelley on 8/29/2020 */
 @RestController
-@RequestMapping("/books/{bookId}/notes")
+@RequestMapping("/api/books/{bookId}/notes")
 public class BookNoteController {
   private final BookNoteService bookNoteService;
 
