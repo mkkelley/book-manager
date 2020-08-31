@@ -25,6 +25,17 @@ export class BookService {
     return this.httpClient.get<PagedResult<Book>>(route);
   }
 
+  public searchBooks(
+    search: string,
+    page = 0,
+    size = 20
+  ): Observable<PagedResult<Book>> {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books?page=${page}&size=${size}&search=${search}`;
+    return this.httpClient.get<PagedResult<Book>>(route);
+  }
+
   public createBook(request: AddBookRequest): Observable<Book> {
     const route = `${
       this.configurationService.getConfiguration().apiBaseUrl

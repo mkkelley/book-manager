@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book.service';
 import { PagedResult } from '../../models/paged-result';
 import { Book } from '../../models/book';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AddBookRequest } from '../../models/add-book-request';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-book-index',
@@ -16,6 +18,9 @@ export class BookIndexComponent implements OnInit {
   public newBooks: { created: boolean; book: Book }[];
   public page = 0;
   public size = 5;
+  public searchControl = new FormControl('');
+
+  private destroy$ = new Subject();
 
   constructor(
     private bookService: BookService,
@@ -23,29 +28,56 @@ export class BookIndexComponent implements OnInit {
     private router: Router
   ) {
     route.queryParamMap.subscribe((paramMap) => {
-      if (paramMap.has('page')) {
+      let changed = false;
+      if (paramMap.has('page') && this.page !== +paramMap.get('page')) {
         this.page = +paramMap.get('page');
+        changed = true;
       }
-      if (paramMap.has('size')) {
+      if (paramMap.has('size') && this.size !== +paramMap.get('size')) {
         this.size = +paramMap.get('size');
+        changed = true;
       }
-      this.changePage();
+      if (
+        paramMap.has('search') &&
+        this.searchControl.value !== paramMap.get('search')
+      ) {
+        this.searchControl.setValue(paramMap.get('search'));
+        changed = true;
+      }
+
+      if (changed) {
+        this.changePage();
+      }
     });
   }
 
   ngOnInit(): void {
+    this.changePage();
     this.newBooks = [];
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(() => this.changePage());
   }
 
   changePage(): void {
-    this.books$ = this.bookService.getBooks(this.page, this.size);
     this.newBooks = [];
+    let queryParams: {} = {
+      page: this.page,
+      size: this.size,
+    };
+    let search = this.searchControl.value;
+    if (search != null && search != '') {
+      this.books$ = this.bookService.searchBooks(search, this.page, this.size);
+      queryParams = {
+        ...queryParams,
+        search: search != null && search !== '' ? search : null,
+      };
+    } else {
+      this.books$ = this.bookService.getBooks(this.page, this.size);
+    }
     this.router.navigate([], {
-      queryParams: {
-        page: this.page,
-        size: this.size,
-      },
-      skipLocationChange: true,
+      queryParamsHandling: 'merge',
+      queryParams,
     });
   }
 

@@ -1,3 +1,10 @@
+<div class="form-group row mx-0">
+  <input
+    [formControl]="searchControl"
+    class="form-control col-lg-3 col-md-6 col-sm-12"
+    placeholder="Title"
+  />
+</div>
 <ng-container *ngIf="books$ | async as books">
   <app-book
     *ngFor="let book of books.content"
