@@ -13,7 +13,7 @@ export class AuthenticationService {
   private sessionId: string;
   private authenticationResponse: AuthenticationResponse;
   private timestamp: number;
-  private readonly FIFTEEN_MINUTES_IN_MS = 15 * 60 * 1000;
+  private readonly FIFTY_NINE_MINUTES_IN_MS = 59 * 60 * 1000;
   private readonly loadingSubject: Subject<boolean>;
 
   constructor(
@@ -29,7 +29,7 @@ export class AuthenticationService {
     const currentTime = new Date().getTime();
     if (
       storageToken != null &&
-      currentTime - storageTimestamp < this.FIFTEEN_MINUTES_IN_MS
+      currentTime - storageTimestamp < this.FIFTY_NINE_MINUTES_IN_MS
     ) {
       this.configurationService.loaded$
         .pipe(filter((loaded) => loaded))
@@ -58,21 +58,23 @@ export class AuthenticationService {
   public authenticated(): boolean {
     return (
       this.sessionId != null &&
-      new Date().getTime() - this.timestamp < this.FIFTEEN_MINUTES_IN_MS
+      new Date().getTime() - this.timestamp < this.FIFTY_NINE_MINUTES_IN_MS
     );
   }
 
   private loadInitialState(token, time, xxx: ProgressEvent<XMLHttpRequest>) {
-    this.sessionId = token;
-    this.timestamp = time;
-    window.localStorage.setItem('auth-token-timestamp', time);
-    this.authenticationResponse = JSON.parse(xxx.target.response);
-    this.loadingSubject.next(false);
+    if (xxx.target.status === 200) {
+      this.sessionId = token;
+      this.timestamp = time;
+      window.localStorage.setItem('auth-token-timestamp', time);
+      this.authenticationResponse = JSON.parse(xxx.target.response);
+      this.loadingSubject.next(false);
+    }
   }
 
   public getSessionId(): string | null {
     const currentTime = new Date().getTime();
-    if (currentTime - this.timestamp > this.FIFTEEN_MINUTES_IN_MS) {
+    if (currentTime - this.timestamp > this.FIFTY_NINE_MINUTES_IN_MS) {
       this.router.navigate(['/login']);
       return null;
     }

@@ -11,4 +11,5 @@ import org.springframework.stereotype.Component;
 @Setter
 public class ApplicationConfig {
   private String apiBaseUrl;
+  private boolean registrationEnabled;
 }
