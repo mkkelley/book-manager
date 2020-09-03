@@ -1,7 +1,10 @@
-{{ bookRead.started | date }} |
+{{ bookRead.started | date: "medium" }} |
 <ng-container *ngIf="bookRead.finished == null; else finishedDate">
   <a [routerLink]="" (click)="emitFinish()">Finish</a>
 </ng-container>
-<ng-template #finishedDate> {{ bookRead.finished | date }}</ng-template> |
+<ng-template #finishedDate>
+  {{ bookRead.finished | date: "medium" }}</ng-template
+>
+|
 {{ bookRead.audiobook ? "Audio" : "Words" }}
 <button class="close" (click)="emitDelete()">&times;</button>
