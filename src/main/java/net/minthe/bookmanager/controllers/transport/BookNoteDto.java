@@ -16,15 +16,15 @@ public class BookNoteDto {
   private String username;
   private Long bookId;
   private String notes;
-  private Instant createdAt;
   private String createdBy;
+  private Instant userCreatedAt;
 
   public BookNoteDto(BookNote bookNote) {
     this.id = bookNote.getId();
     this.username = bookNote.getUsername();
     this.username = bookNote.getUsername();
     this.notes = bookNote.getNotes();
-    this.createdAt = bookNote.getCreatedAt();
     this.createdBy = bookNote.getCreatedBy().getUsername();
+    this.userCreatedAt = bookNote.getUserCreatedAt();
   }
 }

@@ -1,5 +1,7 @@
 package net.minthe.bookmanager.models;
 
+import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 /** Created by Michael Kelley on 8/29/2020 */
 @Entity
@@ -31,4 +35,11 @@ public class BookNote extends Auditable {
   private Book book;
 
   private String notes;
+
+  @CreatedDate private Instant userCreatedAt;
+  @LastModifiedDate private Instant userUpdatedAt;
+
+  public Optional<Instant> getUserUpdatedAt() {
+    return Optional.ofNullable(userUpdatedAt);
+  }
 }
