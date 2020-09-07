@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
@@ -81,6 +82,7 @@ public class BookManagerApplication {
           .permitAll()
           .antMatchers("/api/**")
           .authenticated();
+      http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
     }
   }
 }
