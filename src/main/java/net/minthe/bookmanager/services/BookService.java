@@ -1,16 +1,16 @@
 package net.minthe.bookmanager.services;
 
 import java.time.Instant;
-import java.util.ConcurrentModificationException;
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
 import net.minthe.bookmanager.models.Author;
 import net.minthe.bookmanager.models.Book;
+import net.minthe.bookmanager.models.Tag;
 import net.minthe.bookmanager.repositories.AuthorRepository;
 import net.minthe.bookmanager.repositories.BookRepository;
+import net.minthe.bookmanager.repositories.TagRepository;
 import org.hibernate.Hibernate;
-import org.hibernate.StaleStateException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,15 @@ import org.springframework.stereotype.Service;
 public class BookService {
   private final BookRepository bookRepository;
   private final AuthorRepository authorRepository;
-  private final EntityManagerFactory entityManagerFactory;
+  private final TagRepository tagRepository;
 
   public BookService(
       BookRepository bookRepository,
       AuthorRepository authorRepository,
-      EntityManagerFactory entityManagerFactory) {
+      TagRepository tagRepository) {
     this.bookRepository = bookRepository;
     this.authorRepository = authorRepository;
-    this.entityManagerFactory = entityManagerFactory;
+    this.tagRepository = tagRepository;
   }
 
   public Book getBook(Long id) {
@@ -66,5 +66,39 @@ public class BookService {
     Hibernate.initialize(book.getBookReads());
     bookRepository.deleteById(id);
     return book;
+  }
+
+  public Book addTags(Long bookId, Collection<String> tags) {
+    var book = bookRepository.findById(bookId).orElseThrow();
+    var presentTags =
+        book.getTags().stream().map(Tag::getTag).collect(Collectors.toUnmodifiableList());
+    var newBookTags =
+        tags.stream()
+            .filter(t -> !presentTags.contains(t))
+            .collect(Collectors.toUnmodifiableList());
+    var existingTags =
+        tagRepository.findByTagIn(newBookTags).stream().collect(Collectors.toUnmodifiableList());
+    var existingTagNames =
+        existingTags.stream().map(Tag::getTag).collect(Collectors.toUnmodifiableList());
+    var newTags =
+        newBookTags.stream()
+            .filter(nbt -> !existingTagNames.contains(nbt))
+            .map(
+                newTagTag -> {
+                  var newTag = new Tag();
+                  newTag.setId(null);
+                  newTag.setTag(newTagTag);
+                  return tagRepository.save(newTag);
+                })
+            .collect(Collectors.toUnmodifiableList());
+    book.getTags().addAll(newTags);
+    book.getTags().addAll(existingTags);
+    return bookRepository.save(book);
+  }
+
+  public Book removeTag(Long bookId, String tag) {
+    var book = bookRepository.findById(bookId).orElseThrow();
+    book.getTags().removeIf(t -> t.getTag().equals(tag));
+    return bookRepository.save(book);
   }
 }
