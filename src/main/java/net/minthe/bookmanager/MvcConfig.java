@@ -1,10 +1,12 @@
 package net.minthe.bookmanager;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -29,5 +31,10 @@ public class MvcConfig implements WebMvcConfigurer {
                     : new ClassPathResource("/static/index.html");
               }
             });
+
+    registry.addResourceHandler("**.js")
+        .addResourceLocations("classpath:/static/")
+        .setCacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+        .resourceChain(true);
   }
 }
