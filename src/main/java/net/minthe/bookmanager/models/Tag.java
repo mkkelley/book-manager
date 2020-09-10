@@ -5,9 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,11 +22,7 @@ public class Tag extends Auditable {
 
   private String tag;
 
-  @ManyToMany
-  @JoinTable(
-      name = "books_tags",
-      joinColumns = {@JoinColumn(name = "tag_id")},
-      inverseJoinColumns = {@JoinColumn(name = "book_id")})
+  @OneToMany(mappedBy = "tagId")
   @BatchSize(size = 20)
-  private List<Book> books;
+  private List<BookTag> books;
 }

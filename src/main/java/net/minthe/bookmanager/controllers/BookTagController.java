@@ -1,7 +1,7 @@
 package net.minthe.bookmanager.controllers;
 
 import java.util.List;
-import net.minthe.bookmanager.models.Book;
+import net.minthe.bookmanager.controllers.transport.BookDto;
 import net.minthe.bookmanager.services.BookService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +21,12 @@ public class BookTagController {
   }
 
   @PutMapping
-  public Book addTags(@PathVariable Long bookId, @RequestBody List<String> tags) {
-    return bookService.addTags(bookId, tags);
+  public BookDto addTags(@PathVariable Long bookId, @RequestBody List<String> tags) {
+    return new BookDto(bookService.addTags(bookId, tags));
   }
 
   @DeleteMapping("{tag}")
-  public Book removeTag(@PathVariable Long bookId, @PathVariable String tag) {
-    return bookService.removeTag(bookId, tag);
+  public BookDto removeTag(@PathVariable Long bookId, @PathVariable String tag) {
+    return new BookDto(bookService.removeTag(bookId, tag));
   }
 }

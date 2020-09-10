@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
@@ -53,11 +51,7 @@ public class Book extends Auditable {
   @BatchSize(size = 20)
   private List<BookNote> bookNotes;
 
-  @ManyToMany
-  @JoinTable(
-      name = "books_tags",
-      joinColumns = {@JoinColumn(name = "book_id")},
-      inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+  @OneToMany(mappedBy = "bookId")
   @BatchSize(size = 20)
-  private List<Tag> tags;
+  private List<BookTag> tags;
 }
