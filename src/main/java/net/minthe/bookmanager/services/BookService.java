@@ -69,6 +69,7 @@ public class BookService {
     var book = bookRepository.findById(id).orElseThrow();
     Hibernate.initialize(book.getAuthor());
     Hibernate.initialize(book.getBookReads());
+    Hibernate.initialize(book.getTags());
     bookRepository.deleteById(id);
     return book;
   }
