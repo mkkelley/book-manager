@@ -40,6 +40,9 @@ public class BookDto {
             .map(BookReadDto::new)
             .collect(Collectors.toList())
             : new ArrayList<>();
-    tags = book.getTags().stream().map(t -> t.getTag().getTag()).collect(Collectors.toList());
+    tags =
+        book.getTags() != null
+            ? book.getTags().stream().map(t -> t.getTag().getTag()).collect(Collectors.toList())
+            : new ArrayList<>();
   }
 }
