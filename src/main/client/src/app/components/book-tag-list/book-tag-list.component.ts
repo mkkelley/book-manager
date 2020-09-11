@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { TagService } from '../../services/tag.service';
@@ -12,6 +20,7 @@ export class BookTagListComponent implements OnInit {
   @Input() public tags: string[];
   @Output() public createBookTag = new EventEmitter<string>();
   @Output() public deleteBookTag = new EventEmitter<string>();
+  @ViewChild('tagName') public tagName: ElementRef;
 
   public addTagMode: boolean;
 
@@ -24,6 +33,11 @@ export class BookTagListComponent implements OnInit {
   submit(tag: string) {
     this.addTagMode = false;
     this.createBookTag.emit(tag);
+  }
+
+  enterCreateMode() {
+    this.addTagMode = true;
+    setTimeout(() => this.tagName.nativeElement.focus());
   }
 
   typeahead(tagName$: Observable<string>): Observable<string[]> {
