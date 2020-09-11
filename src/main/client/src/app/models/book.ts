@@ -8,4 +8,5 @@ export class Book {
   createdAt: number;
   published: number;
   bookReads: BookRead[];
+  tags: string[];
 }

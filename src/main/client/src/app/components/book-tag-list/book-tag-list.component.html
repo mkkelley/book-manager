@@ -1,0 +1,23 @@
+<app-book-tag
+  class="d-flex flex-column justify-content-center ml-2"
+  *ngFor="let tag of tags"
+  [tag]="tag"
+  (deleteBookTag)="deleteBookTag.emit(tag)"
+></app-book-tag>
+<div class="d-flex flex-column justify-content-center">
+  <div
+    *ngIf="!addTagMode; else tagForm"
+    class="badge badge-light ml-2"
+    (click)="addTagMode = true"
+  >
+    +
+  </div>
+  <ng-template #tagForm>
+    <input
+      class="ml-2"
+      #tagName
+      (keydown.enter)="submit(tagName.value)"
+      placeholder="tag"
+    />
+  </ng-template>
+</div>

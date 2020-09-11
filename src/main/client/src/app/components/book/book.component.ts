@@ -5,6 +5,7 @@ import { FinishBookReadRequest } from '../../models/finish-book-read-request';
 import { v4 as uuidv4 } from 'uuid';
 import { BookService } from '../../services/book.service';
 import { FormControl } from '@angular/forms';
+import { BookTagService } from '../../services/book-tag.service';
 
 @Component({
   selector: 'app-book',
@@ -17,7 +18,10 @@ export class BookComponent implements OnInit {
 
   public audiobookControl: FormControl;
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private bookTagService: BookTagService
+  ) {}
 
   ngOnInit(): void {
     this.audiobookControl = new FormControl(false);
@@ -57,5 +61,17 @@ export class BookComponent implements OnInit {
 
   delete() {
     this.deleteBook.emit(this.book.id);
+  }
+
+  deleteBookTag(tag: string, book: Book) {
+    this.bookTagService.removeBookTag(book.id, tag).subscribe((book) => {
+      this.book = book;
+    });
+  }
+
+  createBookTag(tag: string, book: Book) {
+    this.bookTagService.addBookTag(book.id, tag).subscribe((book) => {
+      this.book = book;
+    });
   }
 }

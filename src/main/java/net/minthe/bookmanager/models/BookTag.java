@@ -16,20 +16,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookTag extends Auditable {
-
   @JoinColumn(name = "book_id", insertable = false, updatable = false)
-  @ManyToOne
+  @ManyToOne(optional = false)
   private Book book;
 
   @Id
-  @Column(name = "book_id")
+  @Column(name = "book_id", nullable = false)
   private Long bookId;
 
   @JoinColumn(name = "tag_id", insertable = false, updatable = false)
-  @ManyToOne
+  @ManyToOne(optional = false)
   private Tag tag;
 
   @Id
-  @Column(name = "tag_id")
+  @Column(name = "tag_id", nullable = false)
   private Long tagId;
 }

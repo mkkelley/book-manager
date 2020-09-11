@@ -51,7 +51,7 @@ public class Book extends Auditable {
   @BatchSize(size = 20)
   private List<BookNote> bookNotes;
 
-  @OneToMany(mappedBy = "bookId")
+  @OneToMany(mappedBy = "bookId", orphanRemoval = true)
   @BatchSize(size = 20)
   private List<BookTag> tags;
 }

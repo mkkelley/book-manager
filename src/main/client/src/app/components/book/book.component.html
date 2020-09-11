@@ -2,12 +2,17 @@
   <li
     class="list-group-item d-flex flex-row justify-content-between flex-grow-1 flex-wrap"
   >
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row flex-wrap">
       <a [routerLink]="[book.id]">{{ book.title }}</a>
-      <div class="ml-4">{{ book.author.name }}</div>
+      <div class="ml-2 ml-md-4">{{ book.author.name }}</div>
       <div class="ml-4" *ngIf="book.published != null">
         {{ book.published | date }}
       </div>
+      <app-book-tag-list
+        [tags]="book.tags"
+        (deleteBookTag)="deleteBookTag($event, book)"
+        (createBookTag)="createBookTag($event, book)"
+      ></app-book-tag-list>
     </div>
     <div class="d-flex flex-row align-content-center">
       <div class="form-check-inline">

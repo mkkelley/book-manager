@@ -14,9 +14,22 @@ import { BookReadComponent } from './components/book-read/book-read.component';
 import { BookComponent } from './components/book/book.component';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { BookNoteFormComponent } from './components/book-note-form/book-note-form.component';
+import { BookTagComponent } from './components/book-tag/book-tag.component';
+import { BookTagListComponent } from './components/book-tag-list/book-tag-list.component';
 
 @NgModule({
-  declarations: [AppComponent, BookIndexComponent, LoginComponent, NewBookFormComponent, BookReadComponent, BookComponent, BookDetailComponent, BookNoteFormComponent],
+  declarations: [
+    AppComponent,
+    BookIndexComponent,
+    LoginComponent,
+    NewBookFormComponent,
+    BookReadComponent,
+    BookComponent,
+    BookDetailComponent,
+    BookNoteFormComponent,
+    BookTagComponent,
+    BookTagListComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -32,13 +32,13 @@ public class BookDto {
     bookReads =
         book.getBookReads() != null
             ? book.getBookReads().stream()
-            .sorted(
-                (a, b) ->
-                    a.getStarted()
-                        .flatMap(first -> b.getStarted().map(first::compareTo))
-                        .orElse(-1))
-            .map(BookReadDto::new)
-            .collect(Collectors.toList())
+                .sorted(
+                    (a, b) ->
+                        a.getStarted()
+                            .flatMap(first -> b.getStarted().map(first::compareTo))
+                            .orElse(-1))
+                .map(BookReadDto::new)
+                .collect(Collectors.toList())
             : new ArrayList<>();
     tags =
         book.getTags() != null
