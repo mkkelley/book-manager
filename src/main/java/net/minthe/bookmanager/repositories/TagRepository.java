@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TagRepository extends CrudRepository<Tag, Long> {
-
   List<Tag> findByTagIn(Iterable<String> tags);
+
+  List<Tag> getAllByTagContainingIgnoreCaseOrderByCreatedAtDesc(String tag);
 }

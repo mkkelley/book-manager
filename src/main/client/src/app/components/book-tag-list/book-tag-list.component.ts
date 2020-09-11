@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { TagService } from '../../services/tag.service';
 
 @Component({
   selector: 'app-book-tag-list',
@@ -12,7 +15,7 @@ export class BookTagListComponent implements OnInit {
 
   public addTagMode: boolean;
 
-  constructor() {
+  constructor(private tagService: TagService) {
     this.addTagMode = false;
   }
 
@@ -21,5 +24,17 @@ export class BookTagListComponent implements OnInit {
   submit(tag: string) {
     this.addTagMode = false;
     this.createBookTag.emit(tag);
+  }
+
+  typeahead(tagName$: Observable<string>): Observable<string[]> {
+    return tagName$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap((tag) => {
+        return this.tagService
+          .typeahead(tag)
+          .pipe(debounceTime(200), distinctUntilChanged());
+      })
+    );
   }
 }

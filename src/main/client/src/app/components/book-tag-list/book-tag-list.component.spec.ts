@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookTagListComponent } from './book-tag-list.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BookTagListComponent', () => {
   let component: BookTagListComponent;
@@ -8,9 +9,9 @@ describe('BookTagListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookTagListComponent ]
-    })
-    .compileComponents();
+      declarations: [BookTagListComponent],
+      imports: [HttpClientTestingModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

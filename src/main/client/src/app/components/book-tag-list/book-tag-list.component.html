@@ -18,6 +18,7 @@
       #tagName
       (keydown.enter)="submit(tagName.value)"
       placeholder="tag"
+      [ngbTypeahead]="typeahead.bind(this)"
     />
   </ng-template>
 </div>
