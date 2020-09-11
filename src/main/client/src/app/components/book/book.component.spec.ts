@@ -28,6 +28,7 @@ describe('BookComponent', () => {
       id: 1231231,
       published: new Date().getTime(),
       createdAt: new Date().getTime(),
+      tags: ['a', 'b', 'c'],
     };
     fixture.detectChanges();
   });
