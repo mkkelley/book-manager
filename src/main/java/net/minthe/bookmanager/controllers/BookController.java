@@ -32,10 +32,7 @@ public class BookController {
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size) {
     var pageRequest = PageRequest.of(page, size);
-    return search
-        .map(s -> bookService.searchBooks(s, pageRequest))
-        .orElseGet(() -> bookService.getBooks(pageRequest))
-        .map(BookDto::new);
+    return bookService.searchBooks(search, tag, pageRequest).map(BookDto::new);
   }
 
   @GetMapping("{bookId}")

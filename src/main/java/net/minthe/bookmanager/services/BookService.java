@@ -2,6 +2,7 @@ package net.minthe.bookmanager.services;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Optional;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
 import net.minthe.bookmanager.models.Author;
 import net.minthe.bookmanager.models.Book;
@@ -30,8 +31,20 @@ public class BookService {
     return bookRepository.getBooksByOrderByCreatedAtDesc(pageable);
   }
 
-  public Page<Book> searchBooks(String search, Pageable pageable) {
-    return bookRepository.getBooksByTitleContainingIgnoreCaseOrderByCreatedAtDesc(search, pageable);
+  public Page<Book> searchBooks(Optional<String> search, Optional<String> tag, Pageable pageable) {
+    if (search.isPresent() && tag.isPresent()) {
+      return bookRepository
+          .getBooksByTitleContainingIgnoreCaseAndTagsTagTagOrderByCreatedAtDesc(
+              search.get(), tag.get(), pageable);
+    } else if (search.isPresent()) {
+      return bookRepository.getBooksByTitleContainingIgnoreCaseOrderByCreatedAtDesc(
+          search.get(), pageable);
+    } else if (tag.isPresent()) {
+      return bookRepository.getBooksByTagsTagTagOrderByCreatedAtDesc(
+          tag.get(), pageable);
+    } else {
+      return bookRepository.getBooksByOrderByCreatedAtDesc(pageable);
+    }
   }
 
   public Book addBook(AddBookRequest request) {

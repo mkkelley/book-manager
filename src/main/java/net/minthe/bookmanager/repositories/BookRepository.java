@@ -9,10 +9,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
+
   @EntityGraph(value = "Book.author")
   Page<Book> getBooksByOrderByCreatedAtDesc(Pageable pageable);
 
   @EntityGraph(value = "Book.author")
   Page<Book> getBooksByTitleContainingIgnoreCaseOrderByCreatedAtDesc(
       String title, Pageable pageable);
+
+  @EntityGraph(value = "Book.author")
+  Page<Book> getBooksByTagsTagTagOrderByCreatedAtDesc(String tag, Pageable pageable);
+
+  @EntityGraph(value = "Book.author")
+  Page<Book> getBooksByTitleContainingIgnoreCaseAndTagsTagTagOrderByCreatedAtDesc(
+      String title, String tag, Pageable pageable);
 }
