@@ -11,7 +11,7 @@ describe('BookIndexComponent', () => {
   let fixture: ComponentFixture<BookIndexComponent>;
 
   beforeEach(async(() => {
-    const mockBookService = jasmine.createSpyObj(['getBooks']);
+    const mockBookService = jasmine.createSpyObj(['searchBooks']);
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [BookIndexComponent, MockAppBookFormComponent],
