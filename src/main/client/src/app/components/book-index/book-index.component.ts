@@ -30,63 +30,37 @@ export class BookIndexComponent implements OnInit {
     private router: Router
   ) {
     route.queryParamMap.subscribe((paramMap) => {
-                                                  let changed = false;
-                                                  if (
-                                                    paramMap.has('page') &&
-                                                    this.page !==
-                                                      +paramMap.get('page')
-                                                  ) {
-                                                    this.page = +paramMap.get(
-                                                      'page'
-                                                    );
-                                                    changed = true;
-                                                  }
-                                                  if (
-                                                    paramMap.has('size') &&
-                                                    this.size !==
-                                                      +paramMap.get('size')
-                                                  ) {
-                                                    this.size = +paramMap.get(
-                                                      'size'
-                                                    );
-                                                    changed = true;
-                                                  }
-                                                  if (
-                                                    (paramMap.has('tag') &&
-                                                      this.tag !==
-                                                        paramMap.get('tag')) ||
-                                                    (!paramMap.has('tag') &&
-                                                      this.tag != null &&
-                                                      this.tag !== '')
-                                                  ) {
-                                                    this.tag = paramMap.get(
-                                                      'tag'
-                                                    );
-                                                    changed = true;
-                                                  }
-                                                  if (
-                                                    (paramMap.has('search') &&
-                                                      this.searchControl
-                                                        .value !==
-                                                        paramMap.get(
-                                                          'search'
-                                                        )) ||
-                                                    (!paramMap.has('search') &&
-                                                      this.searchControl
-                                                        .value != null &&
-                                                      this.searchControl
-                                                        .value !== '')
-                                                  ) {
-                                                    this.searchControl.setValue(
-                                                      paramMap.get('search')
-                                                    );
-                                                    changed = true;
-                                                  }
+      let changed = false;
+      if (paramMap.has('page') && this.page !== +paramMap.get('page')) {
+        this.page = +paramMap.get('page');
+        changed = true;
+      }
+      if (paramMap.has('size') && this.size !== +paramMap.get('size')) {
+        this.size = +paramMap.get('size');
+        changed = true;
+      }
+      if (
+        (paramMap.has('tag') && this.tag !== paramMap.get('tag')) ||
+        (!paramMap.has('tag') && this.tag != null && this.tag !== '')
+      ) {
+        this.tag = paramMap.get('tag');
+        changed = true;
+      }
+      if (
+        (paramMap.has('search') &&
+          this.searchControl.value !== paramMap.get('search')) ||
+        (!paramMap.has('search') &&
+          this.searchControl.value != null &&
+          this.searchControl.value !== '')
+      ) {
+        this.searchControl.setValue(paramMap.get('search'));
+        changed = true;
+      }
 
-                                                  if (changed) {
-                                                    this.changePage();
-                                                  }
-                                                });
+      if (changed) {
+        this.changePage();
+      }
+    });
   }
 
   ngOnInit(): void {
