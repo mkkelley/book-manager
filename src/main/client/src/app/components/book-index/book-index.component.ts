@@ -7,6 +7,7 @@ import { AddBookRequest } from '../../models/add-book-request';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { DEFAULT_PAGE_SIZE } from '../../app.constants';
 
 @Component({
   selector: 'app-book-index',
@@ -17,7 +18,8 @@ export class BookIndexComponent implements OnInit {
   public books$: Observable<PagedResult<Book>>;
   public newBooks: { created: boolean; book: Book }[];
   public page = 0;
-  public size = 5;
+  public size = DEFAULT_PAGE_SIZE;
+  public tag: string;
   public searchControl = new FormControl('');
 
   private destroy$ = new Subject();
@@ -35,6 +37,10 @@ export class BookIndexComponent implements OnInit {
       }
       if (paramMap.has('size') && this.size !== +paramMap.get('size')) {
         this.size = +paramMap.get('size');
+        changed = true;
+      }
+      if (paramMap.has('tag') && this.tag !== paramMap.get('tag')) {
+        this.tag = paramMap.get('tag');
         changed = true;
       }
       if (
@@ -65,16 +71,19 @@ export class BookIndexComponent implements OnInit {
       page: this.page,
       size: this.size,
     };
-    let search = this.searchControl.value;
-    if (search != null && search != '') {
-      this.books$ = this.bookService.searchBooks(search, this.page, this.size);
-      queryParams = {
-        ...queryParams,
-        search: search != null && search !== '' ? search : null,
-      };
-    } else {
-      this.books$ = this.bookService.getBooks(this.page, this.size);
-    }
+    const search = this.searchControl.value;
+    const tag = this.tag;
+    this.books$ = this.bookService.searchBooks(
+      search,
+      tag,
+      this.page,
+      this.size
+    );
+    queryParams = {
+      ...queryParams,
+      search: search != null && search !== '' ? search : null,
+      tag: tag != null && tag !== '' ? tag : null,
+    };
     this.router.navigate([], {
       queryParams,
     });
@@ -84,7 +93,7 @@ export class BookIndexComponent implements OnInit {
     this.newBooks.push({ created: false, book: null });
   }
 
-  createBook(x: any, request: AddBookRequest) {
+  createBook(x: any, request: AddBookRequest): void {
     this.bookService.createBook(request).subscribe((book) => {
       const newBook = this.newBooks.find((nb) => nb === x);
       newBook.book = book;
@@ -93,22 +102,22 @@ export class BookIndexComponent implements OnInit {
     });
   }
 
-  deleteBook(id: number) {
+  deleteBook(id: number): void {
     this.bookService.deleteBook(id).subscribe(() => {
       this.changePage();
     });
   }
 
-  removeBookForm(newBook) {
+  removeBookForm(newBook): void {
     this.newBooks = this.newBooks.filter((x) => x !== newBook);
   }
 
-  nextPage() {
+  nextPage(): void {
     this.page = this.page + 1;
     this.changePage();
   }
 
-  prevPage() {
+  prevPage(): void {
     this.page = this.page - 1;
     this.changePage();
   }

@@ -27,12 +27,19 @@ export class BookService {
 
   public searchBooks(
     search: string,
+    tag: string,
     page = 0,
     size = 20
   ): Observable<PagedResult<Book>> {
-    const route = `${
+    let route = `${
       this.configurationService.getConfiguration().apiBaseUrl
-    }books?page=${page}&size=${size}&search=${search}`;
+    }books?page=${page}&size=${size}`;
+    if (search != null && search !== '') {
+      route = route + `&search=${search}`;
+    }
+    if (tag != null && tag !== '') {
+      route = route + `&tag=${tag}`;
+    }
     return this.httpClient.get<PagedResult<Book>>(route);
   }
 

@@ -3,6 +3,7 @@
   *ngFor="let tag of tags"
   [tag]="tag"
   (deleteBookTag)="deleteBookTag.emit(tag)"
+  (searchTag)="searchTag($event)"
 ></app-book-tag>
 <div class="d-flex flex-column justify-content-center">
   <div

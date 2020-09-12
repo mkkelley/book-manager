@@ -1,4 +1,4 @@
 <div class="badge badge-light d-flex flex-row align-content-center">
-  {{ tag }}
+  <span (click)="searchTag.emit(tag)">{{ tag }}</span>
   <div class="ml-1" (click)="deleteBookTag.emit(tag)">&times;</div>
 </div>

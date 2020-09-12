@@ -28,6 +28,7 @@ public class BookController {
   @GetMapping()
   public Page<BookDto> getBooks(
       @RequestParam(required = false) Optional<String> search,
+      @RequestParam(required = false) Optional<String> tag,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size) {
     var pageRequest = PageRequest.of(page, size);

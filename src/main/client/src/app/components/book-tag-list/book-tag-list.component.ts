@@ -3,32 +3,45 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { TagService } from '../../services/tag.service';
+import { Router } from '@angular/router';
+import { DEFAULT_PAGE_SIZE } from '../../app.constants';
 
 @Component({
   selector: 'app-book-tag-list',
   templateUrl: './book-tag-list.component.html',
   styleUrls: ['./book-tag-list.component.scss'],
 })
-export class BookTagListComponent implements OnInit {
+export class BookTagListComponent implements OnInit, OnDestroy {
   @Input() public tags: string[];
   @Output() public createBookTag = new EventEmitter<string>();
   @Output() public deleteBookTag = new EventEmitter<string>();
   @ViewChild('tagName') public tagName: ElementRef;
+  private destroy$ = new Subject<void>();
 
   public addTagMode: boolean;
 
-  constructor(private tagService: TagService) {
+  constructor(private tagService: TagService, private router: Router) {
     this.addTagMode = false;
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
 
   submit(tag: string) {
     this.addTagMode = false;
@@ -44,11 +57,23 @@ export class BookTagListComponent implements OnInit {
     return tagName$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
+      takeUntil(this.destroy$),
       switchMap((tag) => {
         return this.tagService
           .typeahead(tag)
           .pipe(debounceTime(200), distinctUntilChanged());
       })
     );
+  }
+
+  searchTag(tag: string): void {
+    this.router.navigate(['books'], {
+      relativeTo: null,
+      queryParams: {
+        tag: tag,
+        page: 0,
+        size: DEFAULT_PAGE_SIZE,
+      },
+    });
   }
 }
