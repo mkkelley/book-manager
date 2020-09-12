@@ -121,4 +121,9 @@ export class BookIndexComponent implements OnInit {
     this.page = this.page - 1;
     this.changePage();
   }
+
+  removeTagSearch(): void {
+    this.tag = null;
+    this.changePage();
+  }
 }
