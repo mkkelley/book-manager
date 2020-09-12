@@ -67,12 +67,11 @@ export class BookTagListComponent implements OnInit, OnDestroy {
   }
 
   searchTag(tag: string): void {
-    this.router.navigate(['books'], {
-      relativeTo: null,
+    this.router.navigate(['/books'], {
       queryParams: {
-        tag: tag,
         page: 0,
         size: DEFAULT_PAGE_SIZE,
+        tag: tag,
       },
     });
   }
