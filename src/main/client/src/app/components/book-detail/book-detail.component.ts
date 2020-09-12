@@ -4,6 +4,7 @@ import { BookDetail } from '../../models/book-detail';
 import { BookService } from '../../services/book.service';
 import { BookNoteService } from '../../services/book-note.service';
 import { BookNote } from '../../models/book-note';
+import { BookTagService } from '../../services/book-tag.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -16,7 +17,8 @@ export class BookDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
-    private bookNoteService: BookNoteService
+    private bookNoteService: BookNoteService,
+    private bookTagService: BookTagService
   ) {}
 
   ngOnInit(): void {
@@ -50,5 +52,17 @@ export class BookDetailComponent implements OnInit {
       .subscribe((note) => {
         this.book.notes = [note, ...this.book.notes];
       });
+  }
+
+  createTag(tag: string) {
+    this.bookTagService
+      .addBookTag(this.book.id, tag)
+      .subscribe((book) => (this.book = { ...this.book, tags: book.tags }));
+  }
+
+  deleteTag(tag: string) {
+    this.bookTagService
+      .removeBookTag(this.book.id, tag)
+      .subscribe((book) => (this.book = { ...this.book, tags: book.tags }));
   }
 }

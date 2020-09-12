@@ -4,6 +4,12 @@
   {{ book.published | date }}
 </div>
 
+<app-book-tag-list
+  (createBookTag)="createTag($event)"
+  (deleteBookTag)="deleteTag($event)"
+  [tags]="book.tags"
+></app-book-tag-list>
+
 <div *ngFor="let read of book.bookReads">
   <app-book-read
     (delete)="deleteRead(read.id)"
