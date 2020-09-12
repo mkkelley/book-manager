@@ -76,7 +76,6 @@ export class BookIndexComponent implements OnInit {
       this.books$ = this.bookService.getBooks(this.page, this.size);
     }
     this.router.navigate([], {
-      queryParamsHandling: 'merge',
       queryParams,
     });
   }
