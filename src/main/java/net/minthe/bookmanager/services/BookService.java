@@ -1,6 +1,7 @@
 package net.minthe.bookmanager.services;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
 import net.minthe.bookmanager.models.Author;
 import net.minthe.bookmanager.models.Book;
@@ -37,7 +38,7 @@ public class BookService {
     var authors = authorRepository.findByNameOrderById(request.getAuthorName());
     Author author;
     if (authors.size() == 0) {
-      author = authorRepository.save(new Author(null, request.getAuthorName()));
+      author = authorRepository.save(new Author(null, request.getAuthorName(), new ArrayList<>()));
     } else {
       author = authors.get(0);
     }

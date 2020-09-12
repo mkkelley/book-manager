@@ -33,11 +33,11 @@ public class Book extends Auditable {
 
   private String title;
 
-  @Column(name = "author_id")
+  @Column(name = "author_id", nullable = false)
   private Long authorId;
 
   @JoinColumn(name = "author_id", insertable = false, updatable = false)
-  @ManyToOne
+  @ManyToOne(optional = false)
   @Generated(value = GenerationTime.INSERT)
   private Author author;
 
