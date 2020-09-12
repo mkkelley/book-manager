@@ -30,7 +30,7 @@ export class NewBookFormComponent implements OnInit {
     });
   }
 
-  submit() {
+  submit(): void {
     const date: { day: number; month: number; year: number } = this.bookForm
       .controls.published.value;
     this.newBook.emit({
@@ -40,7 +40,7 @@ export class NewBookFormComponent implements OnInit {
     });
   }
 
-  emitRemove() {
+  emitRemove(): void {
     this.remove.emit();
   }
 

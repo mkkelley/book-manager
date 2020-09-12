@@ -27,7 +27,7 @@ export class BookComponent implements OnInit {
     this.audiobookControl = new FormControl(false);
   }
 
-  newBookRead() {
+  newBookRead(): void {
     const bookId = this.book.id;
     const audiobook = this.audiobookControl.value;
     const request: AddBookReadRequest = {
@@ -41,7 +41,7 @@ export class BookComponent implements OnInit {
     });
   }
 
-  finishBookRead(id: string, bookId: number) {
+  finishBookRead(id: string, bookId: number): void {
     const request: FinishBookReadRequest = {
       finished: new Date().getTime(),
       id: id,
@@ -53,25 +53,25 @@ export class BookComponent implements OnInit {
     });
   }
 
-  deleteBookRead(id: string, bookId: number) {
+  deleteBookRead(id: string, bookId: number): void {
     this.bookService.deleteBookRead(bookId, id).subscribe(() => {
       this.book.bookReads = this.book.bookReads.filter((br) => br.id !== id);
     });
   }
 
-  delete() {
+  delete(): void {
     this.deleteBook.emit(this.book.id);
   }
 
-  deleteBookTag(tag: string, book: Book) {
-    this.bookTagService.removeBookTag(book.id, tag).subscribe((book) => {
-      this.book = book;
+  deleteBookTag(tag: string, book: Book): void {
+    this.bookTagService.removeBookTag(book.id, tag).subscribe((b) => {
+      this.book = b;
     });
   }
 
-  createBookTag(tag: string, book: Book) {
-    this.bookTagService.addBookTag(book.id, tag).subscribe((book) => {
-      this.book = book;
+  createBookTag(tag: string, book: Book): void {
+    this.bookTagService.addBookTag(book.id, tag).subscribe((b) => {
+      this.book = b;
     });
   }
 }

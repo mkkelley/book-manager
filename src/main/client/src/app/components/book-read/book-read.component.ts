@@ -15,11 +15,11 @@ export class BookReadComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  emitFinish() {
+  emitFinish(): void {
     this.finish.emit();
   }
 
-  emitDelete() {
+  emitDelete(): void {
     this.delete.emit();
   }
 }

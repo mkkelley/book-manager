@@ -12,7 +12,7 @@ describe('BookDetailComponent', () => {
   let fixture: ComponentFixture<BookDetailComponent>;
 
   beforeEach(async(() => {
-    let routeStub = {
+    const routeStub = {
       data: of({
         book: {
           bookReads: [],

@@ -27,13 +27,13 @@ export class BookDetailComponent implements OnInit {
     });
   }
 
-  deleteRead(readId: string) {
+  deleteRead(readId: string): void {
     this.bookService.deleteBookRead(this.book.id, readId).subscribe((read) => {
-      this.book.bookReads = this.book.bookReads.filter((x) => x.id != read.id);
+      this.book.bookReads = this.book.bookReads.filter((x) => x.id !== read.id);
     });
   }
 
-  finishRead(readId: string) {
+  finishRead(readId: string): void {
     this.bookService
       .finishBookRead(this.book.id, {
         finished: new Date().getTime(),
@@ -46,21 +46,19 @@ export class BookDetailComponent implements OnInit {
       });
   }
 
-  createNote(note: Partial<BookNote>) {
-    this.bookNoteService
-      .createNote(this.book.id, note.notes)
-      .subscribe((note) => {
-        this.book.notes = [note, ...this.book.notes];
-      });
+  createNote(note: Partial<BookNote>): void {
+    this.bookNoteService.createNote(this.book.id, note.notes).subscribe((n) => {
+      this.book.notes = [n, ...this.book.notes];
+    });
   }
 
-  createTag(tag: string) {
+  createTag(tag: string): void {
     this.bookTagService
       .addBookTag(this.book.id, tag)
       .subscribe((book) => (this.book = { ...this.book, tags: book.tags }));
   }
 
-  deleteTag(tag: string) {
+  deleteTag(tag: string): void {
     this.bookTagService
       .removeBookTag(this.book.id, tag)
       .subscribe((book) => (this.book = { ...this.book, tags: book.tags }));

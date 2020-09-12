@@ -28,7 +28,7 @@ export class BookNoteFormComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(): void {
     this.note.emit({
       notes: this.form.controls.notes.value,
     });

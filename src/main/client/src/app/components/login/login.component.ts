@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     this.loginFailed = false;
   }
 
-  submit() {
+  submit(): void {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
     this.authenticationService

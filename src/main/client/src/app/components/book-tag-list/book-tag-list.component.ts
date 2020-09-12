@@ -43,12 +43,12 @@ export class BookTagListComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
-  submit(tag: string) {
+  submit(tag: string): void {
     this.addTagMode = false;
     this.createBookTag.emit(tag);
   }
 
-  enterCreateMode() {
+  enterCreateMode(): void {
     this.addTagMode = true;
     setTimeout(() => this.tagName.nativeElement.focus());
   }

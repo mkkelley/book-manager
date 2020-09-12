@@ -76,6 +76,7 @@
       true,
       "as-needed"
     ],
+    "object-literal-shorthand": false,
     "quotemark": [
       true,
       "single"

@@ -62,7 +62,7 @@ export class AuthenticationService {
     );
   }
 
-  private loadInitialState(token, time, xxx: ProgressEvent<XMLHttpRequest>) {
+  private loadInitialState(token, time, xxx: ProgressEvent<XMLHttpRequest>): void {
     if (xxx.target.status === 200) {
       this.sessionId = token;
       this.timestamp = time;

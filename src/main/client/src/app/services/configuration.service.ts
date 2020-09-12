@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from '../models/configuration';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +20,12 @@ export class ConfigurationService {
     return this.config;
   }
 
-  public get loaded$() {
+  public get loaded$(): Observable<boolean> {
     return this.loaded;
   }
 
-  private loadConfiguration(event: ProgressEvent<XMLHttpRequest>) {
-    if (event.target.status == 200) {
+  private loadConfiguration(event: ProgressEvent<XMLHttpRequest>): void {
+    if (event.target.status === 200) {
       this.config = JSON.parse(event.target.response);
     } else {
       this.config = {
