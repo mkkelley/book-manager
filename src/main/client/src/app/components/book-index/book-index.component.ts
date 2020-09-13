@@ -125,7 +125,7 @@ export class BookIndexComponent implements OnInit {
     this.newBooks = this.newBooks.filter((x) => x !== newBook);
   }
 
-  pageChange(page: number) {
+  pageChange(page: number): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'merge',
