@@ -1,9 +1,9 @@
 package net.minthe.bookmanager.controllers;
 
-import java.util.Optional;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
 import net.minthe.bookmanager.controllers.transport.BookDetailDto;
 import net.minthe.bookmanager.controllers.transport.BookDto;
+import net.minthe.bookmanager.services.BookFilter;
 import net.minthe.bookmanager.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,12 +27,11 @@ public class BookController {
 
   @GetMapping()
   public Page<BookDto> getBooks(
-      @RequestParam(required = false) Optional<String> search,
-      @RequestParam(required = false) Optional<String> tag,
+      BookFilter filter,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size) {
     var pageRequest = PageRequest.of(page, size);
-    return bookService.searchBooks(search, tag, pageRequest).map(BookDto::new);
+    return bookService.searchBooks(filter, pageRequest).map(BookDto::new);
   }
 
   @GetMapping("{bookId}")

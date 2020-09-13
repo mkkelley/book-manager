@@ -20,7 +20,9 @@ export class BookIndexComponent implements OnInit {
   public page = 0;
   public size = DEFAULT_PAGE_SIZE;
   public tag: string;
+  public unfinished: boolean;
   public searchControl = new FormControl('');
+  public unfinishedControl = new FormControl(false);
 
   private destroy$ = new Subject();
 
@@ -30,45 +32,46 @@ export class BookIndexComponent implements OnInit {
     private router: Router
   ) {
     route.queryParamMap.subscribe((paramMap) => {
-      let changed = false;
-      if (paramMap.has('page') && this.page !== +paramMap.get('page')) {
-        this.page = +paramMap.get('page');
-        changed = true;
-      }
-      if (paramMap.has('size') && this.size !== +paramMap.get('size')) {
-        this.size = +paramMap.get('size');
-        changed = true;
-      }
-      if (
-        (paramMap.has('tag') && this.tag !== paramMap.get('tag')) ||
-        (!paramMap.has('tag') && this.tag != null && this.tag !== '')
-      ) {
-        this.tag = paramMap.get('tag');
-        changed = true;
-      }
-      if (
-        (paramMap.has('search') &&
-          this.searchControl.value !== paramMap.get('search')) ||
-        (!paramMap.has('search') &&
-          this.searchControl.value != null &&
-          this.searchControl.value !== '')
-      ) {
+      this.page = +paramMap.get('page');
+      this.size =
+        paramMap.get('size') != null
+          ? +paramMap.get('size')
+          : DEFAULT_PAGE_SIZE;
+      this.tag = paramMap.get('tag');
+      if (paramMap.get('search') !== this.searchControl.value) {
         this.searchControl.setValue(paramMap.get('search'));
-        changed = true;
       }
-
-      if (changed) {
-        this.changePage();
+      if (JSON.parse(paramMap.get('unfinished')) !== this.unfinished) {
+        this.unfinishedControl.setValue(JSON.parse(paramMap.get('unfinished')));
       }
+      this.changePage();
     });
   }
 
   ngOnInit(): void {
-    this.changePage();
     this.newBooks = [];
     this.searchControl.valueChanges
       .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe(() => this.changePage());
+      .subscribe((value) =>
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParamsHandling: 'merge',
+          queryParams: {
+            search: value,
+          },
+        })
+      );
+    this.unfinishedControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) =>
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParamsHandling: 'merge',
+          queryParams: {
+            unfinished: value,
+          },
+        })
+      );
   }
 
   changePage(): void {
@@ -79,9 +82,11 @@ export class BookIndexComponent implements OnInit {
     };
     const search = this.searchControl.value;
     const tag = this.tag;
+    const unfinished = this.unfinishedControl.value;
     this.books$ = this.bookService.searchBooks(
       search,
       tag,
+      unfinished,
       this.page,
       this.size
     );
@@ -89,8 +94,10 @@ export class BookIndexComponent implements OnInit {
       ...queryParams,
       search: search != null && search !== '' ? search : null,
       tag: tag != null && tag !== '' ? tag : null,
+      unfinished: unfinished != null ? unfinished : null,
     };
     this.router.navigate([], {
+      relativeTo: this.route,
       queryParams,
     });
   }
@@ -118,18 +125,23 @@ export class BookIndexComponent implements OnInit {
     this.newBooks = this.newBooks.filter((x) => x !== newBook);
   }
 
-  nextPage(): void {
-    this.page = this.page + 1;
-    this.changePage();
-  }
-
-  prevPage(): void {
-    this.page = this.page - 1;
-    this.changePage();
+  pageChange(page: number) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
+      queryParams: {
+        page: page,
+      },
+    });
   }
 
   removeTagSearch(): void {
-    this.tag = null;
-    this.changePage();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
+      queryParams: {
+        tag: null,
+      },
+    });
   }
 }

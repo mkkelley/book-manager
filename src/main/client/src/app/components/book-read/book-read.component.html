@@ -1,6 +1,6 @@
 {{ bookRead.started | date: "medium" }} |
 <ng-container *ngIf="bookRead.finished == null; else finishedDate">
-  <a [routerLink]="" (click)="emitFinish()">Finish</a>
+  <button class="btn btn-link p-0 mb-1" (click)="emitFinish()">Finish</button>
 </ng-container>
 <ng-template #finishedDate>
   {{ bookRead.finished | date: "medium" }}</ng-template

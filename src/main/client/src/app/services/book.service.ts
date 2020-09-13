@@ -28,6 +28,7 @@ export class BookService {
   public searchBooks(
     search: string,
     tag: string,
+    unfinished: boolean,
     page = 0,
     size = 20
   ): Observable<PagedResult<Book>> {
@@ -39,6 +40,9 @@ export class BookService {
     }
     if (tag != null && tag !== '') {
       route = route + `&tag=${tag}`;
+    }
+    if (unfinished != null) {
+      route = route + `&unfinished=${unfinished}`;
     }
     return this.httpClient.get<PagedResult<Book>>(route);
   }

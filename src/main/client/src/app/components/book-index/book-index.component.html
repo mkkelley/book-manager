@@ -10,6 +10,18 @@
       &times;
     </span>
   </h4>
+  <div
+    class="d-flex flex-row form-check-inline ml-1 ml-md-2 align-content-center"
+  >
+    <label class="form-check-label" for="unfinished">Unfinished</label>
+    <input
+      type="checkbox"
+      class="form-check ml-1 ml-md-2"
+      name="unfinished"
+      id="unfinished"
+      [formControl]="unfinishedControl"
+    />
+  </div>
 </div>
 <ng-container *ngIf="books$ | async as books">
   <app-book
@@ -32,20 +44,12 @@
       <button class="close float-left" (click)="newBook()">+</button>
     </li>
   </ul>
-  <div class="d-flex flex-row justify-content-between mt-2">
-    <button
-      [disabled]="books.first"
-      class="btn btn-outline-dark"
-      (click)="prevPage()"
-    >
-      Prev
-    </button>
-    <button
-      [disabled]="books.last"
-      class="btn btn-outline-dark"
-      (click)="nextPage()"
-    >
-      Next
-    </button>
+  <div class="d-flex flex-row justify-content-center">
+    <ngb-pagination
+      [collectionSize]="books.totalElements"
+      [pageSize]="size"
+      [page]="page + 1"
+      (pageChange)="pageChange($event - 1)"
+    ></ngb-pagination>
   </div>
 </ng-container>
