@@ -48,7 +48,7 @@ export class BookDetailComponent implements OnInit {
 
   createNote(note: Partial<BookNote>): void {
     this.bookNoteService.createNote(this.book.id, note.notes).subscribe((n) => {
-      this.book.notes = [n, ...this.book.notes];
+      this.book.notes = [...this.book.notes, n];
     });
   }
 

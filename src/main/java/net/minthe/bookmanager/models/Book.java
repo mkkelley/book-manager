@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,12 +44,14 @@ public class Book extends Auditable {
 
   @OneToMany(mappedBy = "bookId")
   @BatchSize(size = 20)
+  @OrderBy("createdAt ASC")
   private List<BookRead> bookReads;
 
   private Instant published;
 
   @OneToMany(mappedBy = "bookId")
   @BatchSize(size = 20)
+  @OrderBy("userCreatedAt ASC")
   private List<BookNote> bookNotes;
 
   @OneToMany(mappedBy = "bookId", orphanRemoval = true)

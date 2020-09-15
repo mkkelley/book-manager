@@ -20,9 +20,7 @@
 </div>
 
 <div *ngFor="let note of book.notes" class="card mb-3">
-  <div class="card-body">
-    {{ note.notes }}
-  </div>
+  <div class="card-body pb-1" [innerHTML]="note.renderedNotes"></div>
   <div class="card-footer d-flex flex-row justify-content-between">
     <div class="text-muted">
       {{ note.createdBy }}
