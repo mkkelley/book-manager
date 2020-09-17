@@ -1,5 +1,6 @@
 package net.minthe.bookmanager.controllers.transport;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.Getter;
@@ -19,6 +20,9 @@ public class BookNoteDto {
   private String createdBy;
   private Instant userCreatedAt;
 
+  @JsonSerialize(using = MarkdownSerializer.class)
+  private MarkdownContent renderedNotes;
+
   public BookNoteDto(BookNote bookNote) {
     this.id = bookNote.getId();
     this.username = bookNote.getUsername();
@@ -26,5 +30,7 @@ public class BookNoteDto {
     this.notes = bookNote.getNotes();
     this.createdBy = bookNote.getCreatedBy().getUsername();
     this.userCreatedAt = bookNote.getUserCreatedAt();
+
+    this.renderedNotes = new MarkdownContent(this.notes);
   }
 }
