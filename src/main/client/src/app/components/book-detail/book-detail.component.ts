@@ -5,6 +5,7 @@ import { BookService } from '../../services/book.service';
 import { BookNoteService } from '../../services/book-note.service';
 import { BookNote } from '../../models/book-note';
 import { BookTagService } from '../../services/book-tag.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-book-detail',
@@ -13,15 +14,18 @@ import { BookTagService } from '../../services/book-tag.service';
 })
 export class BookDetailComponent implements OnInit {
   public book: BookDetail;
+  public deleteMode: boolean;
 
   constructor(
     private route: ActivatedRoute,
+    private location: Location,
     private bookService: BookService,
     private bookNoteService: BookNoteService,
     private bookTagService: BookTagService
   ) {}
 
   ngOnInit(): void {
+    this.deleteMode = false;
     this.route.data.subscribe((data) => {
       this.book = data.book;
     });
@@ -62,5 +66,11 @@ export class BookDetailComponent implements OnInit {
     this.bookTagService
       .removeBookTag(this.book.id, tag)
       .subscribe((book) => (this.book = { ...this.book, tags: book.tags }));
+  }
+
+  delete(): void {
+    this.bookService.deleteBook(this.book.id).subscribe(() => {
+      this.location.back();
+    });
   }
 }

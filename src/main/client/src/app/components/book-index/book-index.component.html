@@ -27,6 +27,7 @@
   <app-book
     *ngFor="let book of books.content"
     [book]="book"
+    [showDelete]="false"
     (deleteBook)="deleteBook($event)"
   ></app-book>
   <ng-container *ngFor="let x of newBooks">

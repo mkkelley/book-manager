@@ -31,4 +31,26 @@
   </div>
 </div>
 
-<app-book-note-form (note)="createNote($event)"></app-book-note-form>
+<div class="mt-2">
+  <app-book-note-form (note)="createNote($event)"></app-book-note-form>
+</div>
+
+<div class="mt-4 btn-group">
+  <button
+    class="btn btn-danger"
+    *ngIf="!deleteMode"
+    (click)="deleteMode = true"
+  >
+    Delete
+  </button>
+  <button class="btn btn-danger" *ngIf="deleteMode" (click)="delete()">
+    Confirm
+  </button>
+  <button
+    class="btn btn-secondary"
+    *ngIf="deleteMode"
+    (click)="deleteMode = false"
+  >
+    Cancel
+  </button>
+</div>

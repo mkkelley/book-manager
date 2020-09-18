@@ -26,10 +26,10 @@
           [formControl]="audiobookControl"
         />
       </div>
-      <div class="mr-lg-3 mr-md-2 mr-sm-1">
+      <div>
         <button class="close" (click)="newBookRead()">+</button>
       </div>
-      <div>
+      <div *ngIf="showDelete" class="ml-lg-3 ml-md-2 ml-sm-1">
         <button class="close" (click)="delete()">&times;</button>
       </div>
     </div>

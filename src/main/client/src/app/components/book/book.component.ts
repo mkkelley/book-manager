@@ -14,6 +14,7 @@ import { BookTagService } from '../../services/book-tag.service';
 })
 export class BookComponent implements OnInit {
   @Input() book: Book;
+  @Input() showDelete = true;
   @Output() deleteBook = new EventEmitter<number>();
 
   public audiobookControl: FormControl;
