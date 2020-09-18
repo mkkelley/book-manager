@@ -32,7 +32,7 @@ public class MvcConfig implements WebMvcConfigurer {
               }
             });
 
-    registry.addResourceHandler("**.js")
+    registry.addResourceHandler("**.js", "**.css")
         .addResourceLocations("classpath:/static/")
         .setCacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
         .resourceChain(true);
