@@ -23,12 +23,11 @@
     />
   </div>
 </div>
-<ng-container *ngIf="books$ | async as books">
+<ng-container *ngIf="books">
   <app-book
     *ngFor="let book of books.content"
     [book]="book"
     [showDelete]="false"
-    (deleteBook)="deleteBook($event)"
   ></app-book>
   <ng-container *ngFor="let x of newBooks">
     <app-new-book-form
@@ -37,7 +36,7 @@
       (remove)="removeBookForm(x)"
     ></app-new-book-form>
     <ng-template #createdBook>
-      <app-book [book]="x.book" (deleteBook)="deleteBook($event)"></app-book>
+      <app-book [book]="x.book"></app-book>
     </ng-template>
   </ng-container>
   <ul class="list-group">

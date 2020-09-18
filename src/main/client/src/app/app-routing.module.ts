@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { BookDetailComponent } from './components/book-detail/book-detail.component';
 import { BookDetailResolver } from './resolvers/book-detail-resolver.service';
+import { BookPageResolver } from './resolvers/book-page-resolver.service';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         component: BookIndexComponent,
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+        resolve: {
+          books: BookPageResolver,
+        },
       },
       {
         path: ':bookId',
