@@ -50,6 +50,7 @@
       [pageSize]="size"
       [page]="page + 1"
       (pageChange)="pageChange($event - 1)"
+      [maxSize]="5"
     ></ngb-pagination>
   </div>
 </ng-container>
