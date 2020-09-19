@@ -6,12 +6,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { BookStorageService } from '../../services/book-storage.service';
 
 describe('BookDetailComponent', () => {
   let component: BookDetailComponent;
   let fixture: ComponentFixture<BookDetailComponent>;
 
   beforeEach(async(() => {
+    const mockBookStorageService = jasmine.createSpyObj(['getFiles']);
     const routeStub = {
       data: of({
         book: {
@@ -36,6 +38,10 @@ describe('BookDetailComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: routeStub,
+        },
+        {
+          provide: BookStorageService,
+          useValue: mockBookStorageService,
         },
       ],
     }).compileComponents();

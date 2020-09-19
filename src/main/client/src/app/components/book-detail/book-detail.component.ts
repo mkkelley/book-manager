@@ -7,6 +7,9 @@ import { BookNote } from '../../models/book-note';
 import { BookTagService } from '../../services/book-tag.service';
 import { Location } from '@angular/common';
 import { UpdateBookRequest } from '../../models/update-book-request';
+import { BookStorageService } from '../../services/book-storage.service';
+import { Observable } from 'rxjs';
+import { BookStorage } from '../../models/book-storage';
 
 @Component({
   selector: 'app-book-detail',
@@ -16,19 +19,22 @@ import { UpdateBookRequest } from '../../models/update-book-request';
 export class BookDetailComponent implements OnInit {
   public book: BookDetail;
   public deleteMode: boolean;
+  public bookUploads$: Observable<BookStorage[]>;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private bookService: BookService,
     private bookNoteService: BookNoteService,
-    private bookTagService: BookTagService
+    private bookTagService: BookTagService,
+    private bookStorageService: BookStorageService
   ) {}
 
   ngOnInit(): void {
     this.deleteMode = false;
     this.route.data.subscribe((data) => {
       this.book = data.book;
+      this.bookUploads$ = this.bookStorageService.getFiles(this.book.id);
     });
   }
 
@@ -95,5 +101,11 @@ export class BookDetailComponent implements OnInit {
     this.bookService
       .updateBook(request)
       .subscribe((book) => (this.book = { ...this.book, ...book }));
+  }
+
+  upload(value: File): void {
+    this.bookStorageService.uploadFile(value, this.book.id).subscribe(() => {
+      this.bookUploads$ = this.bookStorageService.getFiles(this.book.id);
+    });
   }
 }

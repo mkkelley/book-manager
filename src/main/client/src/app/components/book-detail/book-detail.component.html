@@ -70,3 +70,15 @@
     Cancel
   </button>
 </div>
+
+<div *ngFor="let uploads of bookUploads$ | async">
+  {{ uploads.filename }}
+</div>
+<div class="form-group">
+  <input
+    class="form-control-file"
+    #fileInput
+    type="file"
+    (change)="upload(fileInput.files[0])"
+  />
+</div>
