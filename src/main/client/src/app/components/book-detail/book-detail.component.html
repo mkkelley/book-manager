@@ -1,5 +1,21 @@
-<h4>{{ book.title }}</h4>
-<h5>{{ book.author.name }}</h5>
+<h4>
+  <app-inline-edit
+    placeholder="Title"
+    [value]="book.title"
+    (valueChange)="updateTitle($event)"
+  >
+    {{ book.title }}
+  </app-inline-edit>
+</h4>
+<h5>
+  <app-inline-edit
+    placeholder="Author"
+    [value]="book.author.name"
+    (valueChange)="updateAuthor($event)"
+  >
+    {{ book.author.name }}
+  </app-inline-edit>
+</h5>
 <div *ngIf="book.published">
   {{ book.published | date }}
 </div>

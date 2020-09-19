@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BookIndexComponent } from './components/book-index/book-index.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import { NewBookFormComponent } from './components/new-book-form/new-book-form.component';
@@ -16,6 +16,7 @@ import { BookDetailComponent } from './components/book-detail/book-detail.compon
 import { BookNoteFormComponent } from './components/book-note-form/book-note-form.component';
 import { BookTagComponent } from './components/book-tag/book-tag.component';
 import { BookTagListComponent } from './components/book-tag-list/book-tag-list.component';
+import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { BookTagListComponent } from './components/book-tag-list/book-tag-list.c
     BookNoteFormComponent,
     BookTagComponent,
     BookTagListComponent,
+    InlineEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,7 @@ import { BookTagListComponent } from './components/book-tag-list/book-tag-list.c
     NgbModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [
     {

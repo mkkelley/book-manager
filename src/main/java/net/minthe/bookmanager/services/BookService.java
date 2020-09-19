@@ -1,11 +1,10 @@
 package net.minthe.bookmanager.services;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import net.minthe.bookmanager.controllers.transport.AddBookRequest;
-import net.minthe.bookmanager.models.Author;
+import net.minthe.bookmanager.controllers.transport.UpdateBookRequest;
+import net.minthe.bookmanager.exceptions.NotFoundException;
 import net.minthe.bookmanager.models.Book;
-import net.minthe.bookmanager.repositories.AuthorRepository;
 import net.minthe.bookmanager.repositories.BookRepository;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
@@ -15,11 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookService {
   private final BookRepository bookRepository;
-  private final AuthorRepository authorRepository;
+  private final AuthorService authorService;
 
-  public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
+  public BookService(BookRepository bookRepository, AuthorService authorService) {
     this.bookRepository = bookRepository;
-    this.authorRepository = authorRepository;
+    this.authorService = authorService;
   }
 
   public Book getBook(Long id) {
@@ -36,21 +35,30 @@ public class BookService {
   }
 
   public Book addBook(AddBookRequest request) {
-    var authors = authorRepository.findByNameOrderById(request.getAuthorName());
-    Author author;
-    if (authors.size() == 0) {
-      author = authorRepository.save(new Author(null, request.getAuthorName(), new ArrayList<>()));
-    } else {
-      author = authors.get(0);
-    }
+    var author = authorService.getOrCreate(request.getAuthorName());
 
     var book = new Book();
+    book.setAuthor(author);
     book.setAuthorId(author.getId());
     book.setTitle(request.getTitle());
     book.setPublished(request.getPublished().map(Instant::ofEpochMilli).orElse(null));
     bookRepository.save(book);
 
     return bookRepository.findById(book.getId()).orElseThrow();
+  }
+
+  public Book updateBook(UpdateBookRequest request) {
+    var book =
+        bookRepository
+            .findById(request.getId())
+            .orElseThrow(() -> new NotFoundException(Book.class, request.getId()));
+
+    var author = authorService.getOrCreate(request.getAuthorName());
+    book.setAuthor(author);
+    book.setAuthorId(author.getId());
+    book.setTitle(request.getTitle());
+    book.setPublished(request.getPublished().map(Instant::ofEpochMilli).orElse(null));
+    return bookRepository.save(book);
   }
 
   public Book deleteBook(Long id) {

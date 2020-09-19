@@ -1,0 +1,12 @@
+<div *ngIf="!editMode" (click)="edit()">
+  <ng-content></ng-content>
+</div>
+<input
+  #textbox
+  *ngIf="editMode"
+  [(ngModel)]="formValue"
+  [className]="inputClass"
+  [placeholder]="placeholder"
+  (keydown.enter)="submit()"
+  (keydown.escape)="cancel()"
+/>

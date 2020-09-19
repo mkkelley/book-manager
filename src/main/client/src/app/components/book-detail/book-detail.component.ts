@@ -6,6 +6,7 @@ import { BookNoteService } from '../../services/book-note.service';
 import { BookNote } from '../../models/book-note';
 import { BookTagService } from '../../services/book-tag.service';
 import { Location } from '@angular/common';
+import { UpdateBookRequest } from '../../models/update-book-request';
 
 @Component({
   selector: 'app-book-detail',
@@ -72,5 +73,27 @@ export class BookDetailComponent implements OnInit {
     this.bookService.deleteBook(this.book.id).subscribe(() => {
       this.location.back();
     });
+  }
+
+  public updateTitle(title: string): void {
+    const request = new UpdateBookRequest();
+    request.id = this.book.id;
+    request.authorName = this.book.author.name;
+    request.published = this.book.published;
+    request.title = title;
+    this.bookService
+      .updateBook(request)
+      .subscribe((book) => (this.book = { ...this.book, ...book }));
+  }
+
+  public updateAuthor(author: string): void {
+    const request = new UpdateBookRequest();
+    request.id = this.book.id;
+    request.authorName = author;
+    request.published = this.book.published;
+    request.title = this.book.title;
+    this.bookService
+      .updateBook(request)
+      .subscribe((book) => (this.book = { ...this.book, ...book }));
   }
 }

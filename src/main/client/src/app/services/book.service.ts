@@ -8,6 +8,7 @@ import { AddBookRequest } from '../models/add-book-request';
 import { AddBookReadRequest } from '../models/add-book-read-request';
 import { BookRead } from '../models/book-read';
 import { FinishBookReadRequest } from '../models/finish-book-read-request';
+import { UpdateBookRequest } from '../models/update-book-request';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +60,13 @@ export class BookService {
       this.configurationService.getConfiguration().apiBaseUrl
     }books/${id}`;
     return this.httpClient.delete<Book>(route);
+  }
+
+  public updateBook(request: UpdateBookRequest): Observable<Book> {
+    const route = `${
+      this.configurationService.getConfiguration().apiBaseUrl
+    }books/${request.id}`;
+    return this.httpClient.put<Book>(route, request);
   }
 
   public createBookRead(request: AddBookReadRequest): Observable<BookRead> {
