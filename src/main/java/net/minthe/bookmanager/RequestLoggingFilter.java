@@ -40,6 +40,10 @@ public class RequestLoggingFilter implements Filter {
 
     var httpResponse = (HttpServletResponse) response;
     var code = httpResponse.getStatus();
+    if ("/actuator/health".equals(path)) {
+      // too much logspam
+      return;
+    }
     logger.info(
         "{} {}{} - HTTP {} in {}ms [client={}, user={}, session={}]",
         method,
