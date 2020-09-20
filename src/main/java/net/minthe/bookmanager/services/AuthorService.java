@@ -16,7 +16,7 @@ public class AuthorService {
   }
 
   public Stream<Author> getAuthorTypeahead(String authorName) {
-    var authors = authorRepository.findByNameContainingIgnoreCaseOrderByName(authorName);
+    var authors = authorRepository.findByNameCloseToIgnoreCaseOrderByCloseness(authorName);
     return authors.stream().filter(a -> a.getBooks().size() != 0);
   }
 
