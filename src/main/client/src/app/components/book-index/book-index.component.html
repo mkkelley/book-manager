@@ -24,11 +24,11 @@
   </div>
 </div>
 <ng-container *ngIf="books">
-  <app-book
-    *ngFor="let book of books.content"
-    [book]="book"
-    [showDelete]="false"
-  ></app-book>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <button class="close float-left" (click)="newBook()">+</button>
+    </li>
+  </ul>
   <ng-container *ngFor="let x of newBooks">
     <app-new-book-form
       *ngIf="!x.created; else createdBook"
@@ -39,11 +39,11 @@
       <app-book [book]="x.book"></app-book>
     </ng-template>
   </ng-container>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <button class="close float-left" (click)="newBook()">+</button>
-    </li>
-  </ul>
+  <app-book
+    *ngFor="let book of books.content"
+    [book]="book"
+    [showDelete]="false"
+  ></app-book>
   <div class="d-flex flex-row justify-content-center">
     <ngb-pagination
       [collectionSize]="books.totalElements"

@@ -7,7 +7,7 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public isMenuCollapsed = false;
+  public isMenuCollapsed = true;
 
   constructor(private authenticationService: AuthenticationService) {}
 

@@ -45,6 +45,7 @@ export class BookIndexComponent implements OnInit {
       if (JSON.parse(paramMap.get('unfinished')) !== this.unfinished) {
         this.unfinishedControl.setValue(JSON.parse(paramMap.get('unfinished')));
       }
+      this.newBooks = this.newBooks?.filter((nb) => nb.created === false);
     });
   }
 
@@ -75,7 +76,7 @@ export class BookIndexComponent implements OnInit {
   }
 
   newBook(): void {
-    this.newBooks.push({ created: false, book: null });
+    this.newBooks = [{ created: false, book: null }, ...this.newBooks];
   }
 
   createBook(x: any, request: AddBookRequest): void {
