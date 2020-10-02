@@ -44,7 +44,7 @@ public class Book extends Auditable {
 
   @OneToMany(mappedBy = "bookId")
   @BatchSize(size = 20)
-  @OrderBy("createdAt ASC")
+  @OrderBy("createdAt DESC")
   private List<BookRead> bookReads;
 
   private Instant published;

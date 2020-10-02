@@ -34,8 +34,8 @@ public class BookDto {
             ? book.getBookReads().stream()
                 .sorted(
                     (a, b) ->
-                        a.getStarted()
-                            .flatMap(first -> b.getStarted().map(first::compareTo))
+                        b.getStarted()
+                            .flatMap(first -> a.getStarted().map(first::compareTo))
                             .orElse(-1))
                 .map(BookReadDto::new)
                 .collect(Collectors.toList())

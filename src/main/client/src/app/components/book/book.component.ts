@@ -38,7 +38,7 @@ export class BookComponent implements OnInit {
       started: new Date().getTime(),
     };
     this.bookService.createBookRead(request).subscribe((bookRead) => {
-      this.book.bookReads = [...this.book.bookReads, bookRead];
+      this.book.bookReads = [bookRead, ...this.book.bookReads];
     });
   }
 
