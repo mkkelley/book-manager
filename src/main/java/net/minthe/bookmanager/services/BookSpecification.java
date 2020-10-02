@@ -20,8 +20,13 @@ public class BookSpecification implements Specification<Book> {
       Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
     var p = criteriaBuilder.disjunction();
     if (filter.getSearch() != null && !filter.getSearch().equals("")) {
+      var escapedSearch = filter.getSearch().replace("\\", "\\\\").replace("%", "\\%");
       p.getExpressions()
-          .add(criteriaBuilder.like(root.get("title"), "%" + filter.getSearch() + "%"));
+          .add(
+              criteriaBuilder.like(
+                  criteriaBuilder.upper(root.get("title")),
+                  criteriaBuilder.upper(criteriaBuilder.literal("%" + escapedSearch + "%")),
+                  '\\'));
     }
     if (filter.getUnfinished() != null && filter.getUnfinished()) {
       p.getExpressions().add(root.join("bookReads").get("finished").isNull());
