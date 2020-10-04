@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
 import { HttpClient } from '@angular/common/http';
-import { first } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { BookStorage } from '../models/book-storage';
 
@@ -19,7 +18,7 @@ export class BookStorageService {
       this.configurationService.getConfiguration().apiBaseUrl
     }storage/books/${bookId}`;
 
-    return this.httpClient.get<BookStorage[]>(route).pipe(first());
+    return this.httpClient.get<BookStorage[]>(route);
   }
 
   public uploadFile(file: File, bookId: number): Observable<BookStorage> {
@@ -30,6 +29,6 @@ export class BookStorageService {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.httpClient.post<BookStorage>(route, formData).pipe(first());
+    return this.httpClient.post<BookStorage>(route, formData);
   }
 }

@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { filter, first, map, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -24,6 +24,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         }
         return !loading;
       }),
+      first(),
       map(() => {
         const token = this.authenticationService.getSessionId();
         if (token != null) {

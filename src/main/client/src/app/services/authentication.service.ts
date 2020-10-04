@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, filter, finalize, first, map, tap } from 'rxjs/operators';
+import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '../models/authentication-response';
 import { Router } from '@angular/router';
 
@@ -62,7 +62,11 @@ export class AuthenticationService {
     );
   }
 
-  private loadInitialState(token, time, xxx: ProgressEvent<XMLHttpRequest>): void {
+  private loadInitialState(
+    token,
+    time,
+    xxx: ProgressEvent<XMLHttpRequest>
+  ): void {
     if (xxx.target.status === 200) {
       this.sessionId = token;
       this.timestamp = time;
@@ -99,7 +103,6 @@ export class AuthenticationService {
         }
       )
       .pipe(
-        first(),
         tap((httpResponse) => {
           this.sessionId = httpResponse.headers.get('X-Auth-Token');
           this.timestamp = new Date().getTime();
