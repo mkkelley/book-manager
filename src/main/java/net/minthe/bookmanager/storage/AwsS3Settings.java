@@ -20,4 +20,5 @@ class AwsS3Settings {
   private String accessKeyId;
   private String secretKey;
   private String region;
+  private Boolean enabled;
 }
