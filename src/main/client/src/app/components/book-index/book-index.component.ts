@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { AddBookRequest } from '../../models/add-book-request';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE } from '../../app.constants';
 
 @Component({
@@ -52,7 +52,7 @@ export class BookIndexComponent implements OnInit {
   ngOnInit(): void {
     this.newBooks = [];
     this.searchControl.valueChanges
-      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) =>
         this.router.navigate([], {
           relativeTo: this.route,

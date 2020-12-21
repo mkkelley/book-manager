@@ -27,6 +27,12 @@ public class BookSpecification implements Specification<Book> {
                   criteriaBuilder.upper(root.get("title")),
                   criteriaBuilder.upper(criteriaBuilder.literal("%" + escapedSearch + "%")),
                   '\\'));
+      p.getExpressions()
+          .add(
+              criteriaBuilder.like(
+                  criteriaBuilder.upper(root.get("author").get("name")),
+                  criteriaBuilder.upper(criteriaBuilder.literal("%" + escapedSearch + "%")),
+                  '\\'));
     }
     if (filter.getUnfinished() != null && filter.getUnfinished()) {
       p.getExpressions().add(root.join("bookReads").get("finished").isNull());
