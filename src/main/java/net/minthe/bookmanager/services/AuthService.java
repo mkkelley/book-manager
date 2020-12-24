@@ -15,4 +15,12 @@ public class AuthService {
     return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
         .anyMatch(a -> "ADMIN".equals(a.getAuthority()));
   }
+
+  public boolean canActForUser(String username) {
+    if (username == null) {
+      return false;
+    }
+
+    return isAdmin() || username.equals(getUsername());
+  }
 }

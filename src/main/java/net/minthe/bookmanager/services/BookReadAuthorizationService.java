@@ -2,9 +2,9 @@ package net.minthe.bookmanager.services;
 
 import java.util.UUID;
 import net.minthe.bookmanager.repositories.BookReadRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class BookReadAuthorizationService {
 
   private final BookReadRepository bookReadRepository;
