@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/storage")
 public class BookStorageController {
+  private static final long TEN_MB = 10L * 1024L * 1024L * 1024L;
 
   private final StorageService storageService;
 
@@ -34,6 +35,10 @@ public class BookStorageController {
       throws IOException {
     if (!file.getOriginalFilename().strip().matches(".*\\.epub")) {
       return ResponseEntity.badRequest().body("only epub");
+    }
+
+    if (file.getSize() > TEN_MB) {
+      return ResponseEntity.badRequest().body("too large");
     }
 
     var storage =
