@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AuthenticationService } from './services/authentication.service';
+import {Component} from '@angular/core';
+import {AuthenticationService} from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,18 @@ import { AuthenticationService } from './services/authentication.service';
 export class AppComponent {
   public isMenuCollapsed = true;
 
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(private authenticationService: AuthenticationService) {
+  }
 
   public username(): string {
     return this.authenticationService.getUsername();
   }
-}
 
+  public get authenticated(): boolean {
+    return this.authenticationService.authenticated();
+  }
+
+  public logout(): void {
+    this.authenticationService.logout();
+  }
+}

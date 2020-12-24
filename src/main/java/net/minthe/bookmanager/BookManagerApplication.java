@@ -9,12 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
 import org.springframework.session.web.http.HttpSessionIdResolver;
@@ -53,6 +55,7 @@ public class BookManagerApplication {
 
   @Configuration()
   protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
@@ -83,7 +86,11 @@ public class BookManagerApplication {
           .antMatchers("/index.html", "/", "/home", "/user", "/config", "/*.js", "/*.css")
           .permitAll()
           .antMatchers("/api/**")
-          .authenticated();
+          .authenticated()
+          .and()
+          .logout()
+          .logoutUrl("/api/logout")
+          .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
       http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
     }
   }
