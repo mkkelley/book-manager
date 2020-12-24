@@ -31,14 +31,18 @@ export class AuthenticationService {
             `${this.configurationService.getConfiguration().apiBaseUrl}user`,
             { observe: 'response' }
           )
-          .subscribe((response: HttpResponse<AuthenticationResponse>) => {
-            if (response.status === 200) {
+          .subscribe(
+            (response: HttpResponse<AuthenticationResponse>) => {
               this.isAuthenticated = true;
               this.authenticationResponse = response.body;
+              this.loadingSubject.next(false);
+            },
+            (_) => {
+              this.isAuthenticated = false;
+              this.router.navigate(['/login']);
+              this.loadingSubject.next(false);
             }
-            this.isAuthenticated = response.status === 200;
-            this.loadingSubject.next(false);
-          });
+          );
       });
   }
 
