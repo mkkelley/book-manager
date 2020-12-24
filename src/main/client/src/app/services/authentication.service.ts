@@ -1,22 +1,18 @@
-import {Injectable} from '@angular/core';
-import {ConfigurationService} from './configuration.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
-import {catchError, filter, finalize, map, tap} from 'rxjs/operators';
-import {AuthenticationResponse} from '../models/authentication-response';
-import {Router} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { ConfigurationService } from './configuration.service';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { catchError, filter, finalize, first, map, tap } from 'rxjs/operators';
+import { AuthenticationResponse } from '../models/authentication-response';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private sessionId: string;
   private authenticationResponse: AuthenticationResponse;
-  private timestamp: number;
-  private readonly FIFTY_NINE_MINUTES_IN_MS = 59 * 60 * 1000;
   private readonly loadingSubject: Subject<boolean>;
-  private readonly authTokenKey = 'auth-token';
-  private readonly timestampKey = 'auth-token-timestamp';
+  private isAuthenticated: boolean;
 
   constructor(
     private configurationService: ConfigurationService,
@@ -24,33 +20,26 @@ export class AuthenticationService {
     private router: Router
   ) {
     this.loadingSubject = new BehaviorSubject<boolean>(true);
-    const storageToken: string = window.localStorage.getItem(this.authTokenKey);
-    const storageTimestamp: number = +window.localStorage.getItem(
-      this.timestampKey
-    );
-    const currentTime = new Date().getTime();
-    if (
-      storageToken != null &&
-      currentTime - storageTimestamp < this.FIFTY_NINE_MINUTES_IN_MS
-    ) {
-      this.configurationService.loaded$
-        .pipe(filter((loaded) => loaded))
-        .subscribe(() => {
-          const xhr = new XMLHttpRequest();
-          xhr.addEventListener(
-            'load',
-            this.loadInitialState.bind(this, storageToken, currentTime)
-          );
-          xhr.open(
-            'GET',
-            this.configurationService.getConfiguration().apiBaseUrl + 'user'
-          );
-          xhr.setRequestHeader('X-Auth-Token', storageToken);
-          xhr.send();
-        });
-    } else {
-      this.loadingSubject.next(false);
-    }
+    this.configurationService.loaded$
+      .pipe(
+        filter((l) => l),
+        first()
+      )
+      .subscribe(() => {
+        this.httpClient
+          .get(
+            `${this.configurationService.getConfiguration().apiBaseUrl}user`,
+            { observe: 'response' }
+          )
+          .subscribe((response: HttpResponse<AuthenticationResponse>) => {
+            if (response.status === 200) {
+              this.isAuthenticated = true;
+              this.authenticationResponse = response.body;
+            }
+            this.isAuthenticated = response.status === 200;
+            this.loadingSubject.next(false);
+          });
+      });
   }
 
   public get loading$(): Observable<boolean> {
@@ -58,10 +47,7 @@ export class AuthenticationService {
   }
 
   public authenticated(): boolean {
-    return (
-      this.sessionId != null &&
-      new Date().getTime() - this.timestamp < this.FIFTY_NINE_MINUTES_IN_MS
-    );
+    return this.isAuthenticated;
   }
 
   public authenticate(username: string, password: string): Observable<boolean> {
@@ -78,29 +64,13 @@ export class AuthenticationService {
       )
       .pipe(
         tap((httpResponse) => {
-          this.sessionId = httpResponse.headers.get('X-Auth-Token');
-          this.timestamp = new Date().getTime();
-          window.localStorage.setItem(this.authTokenKey, this.sessionId);
-          window.localStorage.setItem(
-            this.timestampKey,
-            this.timestamp.toString()
-          );
           this.authenticationResponse = httpResponse.body;
+          this.isAuthenticated = true;
         }),
         map(() => true),
         catchError(() => of(false)),
         finalize(() => this.loadingSubject.next(false))
       );
-  }
-
-  public getSessionId(): string | null {
-    const currentTime = new Date().getTime();
-    if (currentTime - this.timestamp > this.FIFTY_NINE_MINUTES_IN_MS) {
-      this.router.navigate(['/login']);
-      return null;
-    }
-    this.timestamp = currentTime;
-    return this.sessionId;
   }
 
   public getUsername(): string | null {
@@ -117,26 +87,9 @@ export class AuthenticationService {
     }logout`;
 
     this.httpClient.post(route, null).subscribe(() => {
-      window.localStorage.removeItem(this.authTokenKey);
-      window.localStorage.removeItem(this.timestampKey);
-      this.sessionId = null;
-      this.timestamp = null;
       this.authenticationResponse = null;
+      this.isAuthenticated = false;
       this.router.navigate(['/login']);
     });
-  }
-
-  private loadInitialState(
-    token,
-    time,
-    xxx: ProgressEvent<XMLHttpRequest>
-  ): void {
-    if (xxx.target.status === 200) {
-      this.sessionId = token;
-      this.timestamp = time;
-      window.localStorage.setItem(this.timestampKey, time);
-      this.authenticationResponse = JSON.parse(xxx.target.response);
-      this.loadingSubject.next(false);
-    }
   }
 }
