@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @SpringBootApplication
 @EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 3600)
 @EnableJpaAuditing
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class BookManagerApplication {
 
   public static void main(String[] args) {

@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 class AwsS3Configuration {
 
   @Bean
+  @ConditionalOnProperty(value = "enabled", prefix = "net.minthe.book-manager.s3", havingValue = "true")
   AmazonS3 getAmazonS3(AwsS3Settings settings) {
     var credentials = new BasicAWSCredentials(settings.getAccessKeyId(), settings.getSecretKey());
     var provider = new AWSStaticCredentialsProvider(credentials);
