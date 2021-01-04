@@ -4,6 +4,7 @@ import java.util.Collections;
 import javax.sql.DataSource;
 import net.minthe.bookmanager.models.User;
 import org.apache.tomcat.util.http.SameSiteCookies;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -67,12 +68,26 @@ public class BookManagerApplication {
   }
 
   @Bean
+  public UserDetailsService userDetailsService(DataSource dataSource) {
+    return new JdbcUserDetailsManager(dataSource);
+  }
+
+  @Bean
   public AuditorAware<User> auditorAware() {
     return new AuditorUser();
   }
 
   @Configuration()
   protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsService userDetailsService;
+
+    @Value("${app.remember-me-key}")
+    private String rememberMeKey;
+
+    public SecurityConfiguration(UserDetailsService userDetailsService) {
+      this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -84,11 +99,6 @@ public class BookManagerApplication {
       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
       source.registerCorsConfiguration("/**", configuration);
       return source;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-      return new JdbcUserDetailsManager(dataSource);
     }
 
     @Override
@@ -108,7 +118,12 @@ public class BookManagerApplication {
           .and()
           .logout()
           .logoutUrl("/api/logout")
-          .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
+          .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+          .and()
+          .rememberMe()
+          .alwaysRemember(true)
+          .userDetailsService(userDetailsService)
+          .key(rememberMeKey);
       http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
     }
   }
