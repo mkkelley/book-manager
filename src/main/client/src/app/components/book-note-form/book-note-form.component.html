@@ -6,6 +6,21 @@
       placeholder="Note. Markdown accepted, common syntax"
     >
     </textarea>
+    <div
+      class="error-text"
+      *ngIf="
+        form.controls['notes'].touched &&
+        form.controls['notes'].hasError('required')
+      "
+    >
+      Cannot be empty.
+    </div>
   </div>
-  <button type="submit" class="btn btn-success">Submit</button>
+  <button
+    type="submit"
+    class="btn btn-success"
+    [disabled]="form.dirty && !form.valid"
+  >
+    Submit
+  </button>
 </form>

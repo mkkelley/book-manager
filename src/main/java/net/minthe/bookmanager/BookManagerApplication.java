@@ -7,6 +7,7 @@ import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,7 +34,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 3600)
 @EnableJpaAuditing
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class BookManagerApplication {
+public class BookManagerApplication extends SpringBootServletInitializer {
 
   public static void main(String[] args) {
     SpringApplication.run(BookManagerApplication.class, args);
@@ -103,6 +104,9 @@ public class BookManagerApplication {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+      if (rememberMeKey == null || "".equals(rememberMeKey)) {
+        throw new IllegalStateException("app.remember-me-key must be defined");
+      }
       http.csrf()
           .disable()
           .cors()
