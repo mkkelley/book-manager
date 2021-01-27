@@ -18,7 +18,6 @@
   <properties>
     <java.version>15</java.version>
   </properties>
-  <packaging>war</packaging>
 
   <dependencyManagement>
     <dependencies>
