@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookNoteFormComponent } from './book-note-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('BookNoteFormComponent', () => {
   let component: BookNoteFormComponent;
@@ -8,9 +10,9 @@ describe('BookNoteFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookNoteFormComponent ]
-    })
-    .compileComponents();
+      imports: [ReactiveFormsModule, RouterTestingModule],
+      declarations: [BookNoteFormComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

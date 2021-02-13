@@ -1,47 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-  <a class="navbar-brand" [routerLink]="''">Book Manager</a>
-
-  <button
-    class="navbar-toggler"
-    type="button"
-    (click)="isMenuCollapsed = !isMenuCollapsed"
-  >
-    &#9776;
-  </button>
-
-  <div
-    [ngbCollapse]="isMenuCollapsed"
-    class="justify-content-between collapse navbar-collapse"
-  >
-    <ul class="navbar-nav">
-      <ng-container *ngIf="authenticated">
-        <li class="nav-item">
-          <a
-            (click)="isMenuCollapsed = true"
-            class="nav-link"
-            routerLink="/books"
-            routerLinkActive="active"
-            >Books</a
-          >
-        </li>
-      </ng-container>
-    </ul>
-    <ul class="navbar-nav">
-      <li *ngIf="!authenticated" class="nav-item">
-        <a
-          (click)="isMenuCollapsed = true"
-          class="nav-link"
-          routerLink="/login"
-          routerLinkActive="active"
-          >Login</a
-        >
-      </li>
-      <li *ngIf="authenticated" class="nav-item">
-        <a (click)="logout()" class="nav-link"> Logout {{ username() }} </a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<app-navbar></app-navbar>
 
 <div class="container">
   <router-outlet></router-outlet>

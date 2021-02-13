@@ -17,6 +17,7 @@ import { BookNoteFormComponent } from './components/book-note-form/book-note-for
 import { BookTagComponent } from './components/book-tag/book-tag.component';
 import { BookTagListComponent } from './components/book-tag-list/book-tag-list.component';
 import { InlineEditComponent } from './components/inline-edit/inline-edit.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { InlineEditComponent } from './components/inline-edit/inline-edit.compon
     BookTagComponent,
     BookTagListComponent,
     InlineEditComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

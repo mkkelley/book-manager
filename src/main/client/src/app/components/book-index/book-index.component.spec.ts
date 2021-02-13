@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Component } from '@angular/core';
 import { BookService } from '../../services/book.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('BookIndexComponent', () => {
   let component: BookIndexComponent;
@@ -13,7 +14,11 @@ describe('BookIndexComponent', () => {
   beforeEach(async(() => {
     const mockBookService = jasmine.createSpyObj(['searchBooks']);
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        ReactiveFormsModule,
+      ],
       declarations: [BookIndexComponent, MockAppBookFormComponent],
       providers: [
         {

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BookDetailComponent } from './book-detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { BookStorageService } from '../../services/book-storage.service';
@@ -33,7 +33,12 @@ describe('BookDetailComponent', () => {
     };
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      declarations: [BookDetailComponent, MockBookNoteFormComponent],
+      declarations: [
+        BookDetailComponent,
+        MockBookNoteFormComponent,
+        MockInlineEditComponent,
+        MockBookTagListComponent,
+      ],
       providers: [
         {
           provide: ActivatedRoute,
@@ -63,3 +68,19 @@ describe('BookDetailComponent', () => {
   template: '',
 })
 class MockBookNoteFormComponent {}
+
+@Component({
+  selector: 'app-inline-edit',
+  template: '',
+})
+class MockInlineEditComponent {
+  @Input() value: any;
+}
+
+@Component({
+  selector: 'app-book-tag-list',
+  template: '',
+})
+class MockBookTagListComponent {
+  @Input() tags: any;
+}
