@@ -1,6 +1,7 @@
 image: docker:dind
 services:
-  - docker:dind
+  - name: docker:dind
+    entrypoint: [ "dockerd-entrypoint.sh", "--tls=false" ]
 variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
