@@ -1,0 +1,16 @@
+image: docker:git
+services:
+  - docker:dind
+variables:
+  DOCKER_DRIVER: overlay
+
+before_script:
+  - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
+
+mvnBuild:
+  stage: build
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}"
+    - docker push "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}"
+  only:
+    - branches
