@@ -1,6 +1,6 @@
 FROM openjdk:15-alpine as build
 COPY src mvnw .mvn pom.xml ./
-RUN sh mvnw package
+RUN ./mvnw package
 
 FROM openjdk:15-alpine
 RUN apk --no-cache add curl
