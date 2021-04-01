@@ -1,5 +1,5 @@
 FROM openjdk:15-alpine as build
-COPY src mvnw pom.xml ./
+COPY src mvnw .mvn pom.xml ./
 RUN sh mvnw package
 
 FROM openjdk:15-alpine
