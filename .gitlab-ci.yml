@@ -1,6 +1,6 @@
-image: docker:git
+image: docker:19-git
 services:
-  - name: docker:dind
+  - name: docker:19-dind
     command: [ "--tls=false" ]
 variables:
   DOCKER_DRIVER: overlay
