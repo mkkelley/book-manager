@@ -1,6 +1,4 @@
 FROM maven:3.6.3-openjdk-15 as build
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
 COPY pom.xml .
 COPY src src
 RUN mvn clean package
