@@ -18,3 +18,13 @@ mvnBuild:
     - docker push "$CONTAINER_TAG"
   only:
     - branches
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+  environment:
+    name: staging
+    url: https://book-dev.minthe.net
+    kubernetes:
+      namespace: bkmgr-dev
