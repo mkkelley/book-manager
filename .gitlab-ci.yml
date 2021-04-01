@@ -1,4 +1,4 @@
-image: docker:dind
+image: docker:git
 services:
   - name: docker:dind
 variables:
