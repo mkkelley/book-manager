@@ -1,4 +1,4 @@
-image: openjdk:15-alpine
+image: docker:19-git
 services:
   - name: docker:19-dind
     command: [ "--tls=false" ]
@@ -13,7 +13,6 @@ before_script:
 mvnBuild:
   stage: build
   script:
-    - sh mvnw package
     - docker build --network=host -t "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}" .
     - docker push "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}"
   only:
