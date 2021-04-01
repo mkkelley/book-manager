@@ -1,4 +1,4 @@
-image: docker:19-git
+image: openjdk:15-alpine
 services:
   - name: docker:19-dind
     command: [ "--tls=false" ]
