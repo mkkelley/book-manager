@@ -3,7 +3,7 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 COPY pom.xml .
 COPY src src
-RUN maven package
+RUN mvn clean package
 
 FROM openjdk:15-alpine
 RUN apk --no-cache add curl
