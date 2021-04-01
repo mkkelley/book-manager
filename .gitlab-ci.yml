@@ -1,6 +1,7 @@
 image: docker:git
 services:
   - name: docker:dind
+    command: [ "--tls=false" ]
 variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
