@@ -1,9 +1,9 @@
-FROM openjdk:15-alpine as build
-COPY mvnw .
-COPY .mvn .mvn
+FROM maven:3.6.3-openjdk-15 as build
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
 COPY pom.xml .
 COPY src src
-RUN ./mvnw package
+RUN maven package
 
 FROM openjdk:15-alpine
 RUN apk --no-cache add curl
