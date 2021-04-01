@@ -1,10 +1,10 @@
 image: docker:dind
 services:
   - name: docker:dind
-    entrypoint: [ "dockerd-entrypoint.sh", "--tls=false" ]
 variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
+  DOCKER_TLS_CERTDIR: ""
 
 before_script:
   - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
