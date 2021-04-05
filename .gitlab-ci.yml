@@ -29,7 +29,6 @@ deploy_staging:
     - mkdir -p /etc/deploy
     - echo ${kube_config} | base64 -d > ${KUBECONFIG}
     - echo ${values_file} | base64 -d > /etc/deploy/values.yaml
-    - helm init --client-only
     - export HELM_EXPERIMENTAL_OCI=1
     - helm repo add minthe https://registry.minthe.net/michael/$HELM_NAME
     - helm registry login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" registry.minthe.net
