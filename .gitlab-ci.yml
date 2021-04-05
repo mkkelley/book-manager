@@ -1,7 +1,7 @@
 image: docker:19-git
 services:
   - name: docker:19-dind
-    command: [ "--tls=false" ]
+    command: [ "--tls=false", "--registry-mirror", "http://10.96.77.230" ]
 variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
@@ -27,8 +27,8 @@ deploy_staging:
   stage: deploy
   before_script:
     - mkdir -p /etc/deploy
-    - echo ${kube_config} | base64 --decode > ${KUBECONFIG}
-    - echo ${values_file} | base64 --decode > /etc/deploy/values.yaml
+    - echo ${kube_config} | base64 -d > ${KUBECONFIG}
+    - echo ${values_file} | base64 -d > /etc/deploy/values.yaml
     - helm init --client-only
     - export HELM_EXPERIMENTAL_OCI=1
     - helm repo add minthe https://registry.minthe.net/michael/$HELM_NAME
