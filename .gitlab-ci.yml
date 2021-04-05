@@ -6,7 +6,10 @@ variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
   DOCKER_TLS_CERTDIR: ""
-  CONTAINER_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  KUBECONFIG: /etc/deploy/config
+  CONTAINER_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  HELM_NAME: book-manager-charts
+  HELM_VERSION: v0.0.6
 
 before_script:
   - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
@@ -20,9 +23,21 @@ mvnBuild:
     - branches
 
 deploy_staging:
+  image: lwolf/helm-kubectl-docker:v1.20.5-v3.5.3
   stage: deploy
+  before_script:
+    - mkdir -p /etc/deploy
+    - echo ${kube_config} | base64 --decode > ${KUBECONFIG}
+    - echo ${values_file} | base64 --decode > /etc/deploy/values.yaml
+    - helm init --client-only
+    - export HELM_EXPERIMENTAL_OCI=1
+    - helm repo add minthe https://registry.minthe.net/michael/$HELM_NAME
+    - helm registry login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" registry.minthe.net
+    - helm chart pull registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
   script:
-    - echo "Deploy to staging server"
+    - cd /etc/deploy
+    - helm chart export registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
+    - helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=$CI_COMMIT_SHORT_SHA
   environment:
     name: staging
     url: https://book-dev.minthe.net
