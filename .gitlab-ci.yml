@@ -1,7 +1,7 @@
 image: docker:19-git
 services:
   - name: docker:19-dind
-    command: [ "--tls=false", "--registry-mirror", "http://10.96.77.230" ]
+    command: [ "--tls=false", "--registry-mirror", "http://10.96.77.230:5000" ]
 variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
@@ -30,7 +30,6 @@ deploy_staging:
     - echo ${kube_config} | base64 -d > ${KUBECONFIG}
     - echo ${values_file} | base64 -d > /etc/deploy/values.yaml
     - export HELM_EXPERIMENTAL_OCI=1
-    - helm repo add minthe https://registry.minthe.net/michael/$HELM_NAME
     - helm registry login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" registry.minthe.net
     - helm chart pull registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
   script:
