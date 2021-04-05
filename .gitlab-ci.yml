@@ -35,9 +35,4 @@ deploy_staging:
   script:
     - cd /etc/deploy
     - helm chart export registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
-    - helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=$CI_COMMIT_SHORT_SHA
-  environment:
-    name: staging
-    url: https://book-dev.minthe.net
-    kubernetes:
-      namespace: bkmgr-dev
+    - helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=$CI_COMMIT_SHORT_SHA --kubeconfig ${KUBECONFIG}
