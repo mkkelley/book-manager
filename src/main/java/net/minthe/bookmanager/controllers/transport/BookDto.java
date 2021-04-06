@@ -15,7 +15,7 @@ import net.minthe.bookmanager.models.Book;
 public class BookDto {
   private Long id;
   private String title;
-  private AuthorDto author;
+  private String author;
   private Long published;
   private Long createdAt;
   private Long updatedAt;
@@ -24,7 +24,7 @@ public class BookDto {
 
   public BookDto(Book book) {
     id = book.getId();
-    author = new AuthorDto(book.getAuthor());
+    author = book.getAuthor().getName();
     title = book.getTitle();
     published = book.getPublished() != null ? book.getPublished().toEpochMilli() : null;
     createdAt = book.getCreatedAt().toEpochMilli();

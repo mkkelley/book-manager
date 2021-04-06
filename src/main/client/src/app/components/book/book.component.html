@@ -4,7 +4,7 @@
   >
     <div class="d-flex flex-row flex-wrap">
       <a [routerLink]="[book.id]">{{ book.title }}</a>
-      <div class="ml-2 ml-md-4">{{ book.author.name }}</div>
+      <div class="ml-2 ml-md-4">{{ book.author }}</div>
       <div class="ml-4" *ngIf="book.published != null">
         {{ book.published | date }}
       </div>

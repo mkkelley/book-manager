@@ -10,10 +10,10 @@
 <h5>
   <app-inline-edit
     placeholder="Author"
-    [value]="book.author.name"
+    [value]="book.author"
     (valueChange)="updateAuthor($event)"
   >
-    {{ book.author.name }}
+    {{ book.author }}
   </app-inline-edit>
 </h5>
 <div *ngIf="book.published">

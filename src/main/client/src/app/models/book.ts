@@ -1,10 +1,9 @@
-import { Author } from './author';
 import { BookRead } from './book-read';
 
 export class Book {
   id: number;
   title: string;
-  author: Author;
+  author: string;
   createdAt: number;
   published: number;
   bookReads: BookRead[];

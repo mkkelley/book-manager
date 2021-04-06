@@ -27,11 +27,7 @@ describe('BookComponent', () => {
     component.book = {
       bookReads: [],
       title: 'asdfasdf',
-      author: {
-        name: 'asdfasdfasdf',
-        id: 1234,
-        createdAt: new Date().getTime(),
-      },
+      author: 'asdfasdfasdf',
       id: 1231231,
       published: new Date().getTime(),
       createdAt: new Date().getTime(),

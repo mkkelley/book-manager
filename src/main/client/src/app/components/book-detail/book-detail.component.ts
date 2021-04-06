@@ -84,7 +84,7 @@ export class BookDetailComponent implements OnInit {
   public updateTitle(title: string): void {
     const request = new UpdateBookRequest();
     request.id = this.book.id;
-    request.authorName = this.book.author.name;
+    request.authorName = this.book.author;
     request.published = this.book.published;
     request.title = title;
     this.bookService
