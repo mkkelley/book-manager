@@ -14,13 +14,13 @@ variables:
 before_script:
   - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
 
-#mvnBuild:
-#  stage: build
-#  script:
-#    - docker build --network=host -t "$CONTAINER_TAG" .
-#    - docker push "$CONTAINER_TAG"
-#  only:
-#    - branches
+mvnBuild:
+  stage: build
+  script:
+    - docker build --network=host -t "$CONTAINER_TAG" .
+    - docker push "$CONTAINER_TAG"
+  only:
+    - branches
 
 deploy_staging:
   image: lwolf/helm-kubectl-docker:v1.20.5-v3.5.3
@@ -35,4 +35,4 @@ deploy_staging:
   script:
     - cd /etc/deploy
     - helm chart export registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
-    - KUBECONFIG=${KUBECONFIG} helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=6592a0b8 --kubeconfig ${KUBECONFIG}
+    - KUBECONFIG=${KUBECONFIG} helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=$CI_COMMIT_SHORT_SHA --kubeconfig ${KUBECONFIG}
