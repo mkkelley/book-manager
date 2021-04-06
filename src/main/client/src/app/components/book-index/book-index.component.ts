@@ -102,6 +102,12 @@ export class BookIndexComponent implements OnInit {
     });
   }
 
+  deleteNewBook(bookId: number): void {
+    this.bookService.deleteBook(bookId).subscribe(() => {
+      this.newBooks = this.newBooks.filter((x) => x.book.id !== bookId);
+    });
+  }
+
   removeTagSearch(): void {
     this.router.navigate([], {
       relativeTo: this.route,

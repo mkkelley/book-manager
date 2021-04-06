@@ -29,14 +29,18 @@
       <button class="close float-left" (click)="newBook()">+</button>
     </li>
   </ul>
-  <ng-container *ngFor="let x of newBooks">
+  <ng-container *ngFor="let newBook of newBooks">
     <app-new-book-form
-      *ngIf="!x.created; else createdBook"
-      (newBook)="createBook(x, $event)"
-      (remove)="removeBookForm(x)"
+      *ngIf="!newBook.created; else createdBook"
+      (newBook)="createBook(newBook, $event)"
+      (remove)="removeBookForm(newBook)"
     ></app-new-book-form>
     <ng-template #createdBook>
-      <app-book [book]="x.book"></app-book>
+      <app-book
+        [book]="newBook.book"
+        (deleteBook)="deleteNewBook(newBook.book.id)"
+        [showDelete]="true"
+      ></app-book>
     </ng-template>
   </ng-container>
   <app-book
