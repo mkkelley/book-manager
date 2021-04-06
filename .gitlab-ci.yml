@@ -34,7 +34,5 @@ deploy_staging:
     - helm chart pull registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
   script:
     - cd /etc/deploy
-    - KUBECONFIG=${KUBECONFIG} kubectl config view
-    - sleep 600
     - helm chart export registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
     - KUBECONFIG=${KUBECONFIG} helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=6592a0b8 --kubeconfig ${KUBECONFIG}
