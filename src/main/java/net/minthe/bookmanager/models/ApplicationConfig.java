@@ -12,4 +12,5 @@ import org.springframework.stereotype.Component;
 public class ApplicationConfig {
   private String apiBaseUrl;
   private boolean registrationEnabled;
+  private boolean storageEnabled;
 }

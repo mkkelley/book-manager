@@ -10,6 +10,7 @@ import { UpdateBookRequest } from '../../models/update-book-request';
 import { BookStorageService } from '../../services/book-storage.service';
 import { Observable } from 'rxjs';
 import { BookStorage } from '../../models/book-storage';
+import { ConfigurationService } from '../../services/configuration.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -20,6 +21,7 @@ export class BookDetailComponent implements OnInit {
   public book: BookDetail;
   public deleteMode: boolean;
   public bookUploads$: Observable<BookStorage[]>;
+  public storageEnabled = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,7 +29,8 @@ export class BookDetailComponent implements OnInit {
     private bookService: BookService,
     private bookNoteService: BookNoteService,
     private bookTagService: BookTagService,
-    private bookStorageService: BookStorageService
+    private bookStorageService: BookStorageService,
+    private appConfigService: ConfigurationService
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +39,7 @@ export class BookDetailComponent implements OnInit {
       this.book = data.book;
       this.bookUploads$ = this.bookStorageService.getFiles(this.book.id);
     });
+    this.storageEnabled = this.appConfigService.getConfiguration().storageEnabled;
   }
 
   deleteRead(readId: string): void {
