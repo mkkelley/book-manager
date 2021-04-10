@@ -1,7 +1,7 @@
 image: docker:19-git
 services:
   - name: docker:19-dind
-    command: [ "--tls=false", "--registry-mirror", "http://10.96.77.230:5000" ]
+    command: [ "--tls=false", "--registry-mirror", "http://10.105.200.94:5000" ]
 variables:
   DOCKER_DRIVER: overlay
   DOCKER_HOST: tcp://127.0.0.1:2375
@@ -35,4 +35,4 @@ deploy_staging:
   script:
     - cd /etc/deploy
     - helm chart export registry.minthe.net/michael/$HELM_NAME:$HELM_VERSION
-    - KUBECONFIG=${KUBECONFIG} helm upgrade -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=$CI_COMMIT_SHORT_SHA --kubeconfig ${KUBECONFIG}
+    - KUBECONFIG=${KUBECONFIG} helm upgrade --install -n bkmgr-development -f values.yaml book-manager ./book-manager/ --set=image.tag=$CI_COMMIT_SHORT_SHA --kubeconfig ${KUBECONFIG}
