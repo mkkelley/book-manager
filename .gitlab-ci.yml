@@ -11,9 +11,6 @@ variables:
   HELM_NAME: book-manager-charts
   HELM_VERSION: v0.0.6
 
-before_script:
-  - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
-
 karmaTests:
   stage: test
   image: registry.minthe.net/michael/karma-test-runner/master
@@ -23,6 +20,8 @@ karmaTests:
     - npm run test -- --browsers ChromeHeadless --watch=false
 
 mvnBuild:
+  before_script:
+    - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
   stage: build
   script:
     - docker build --network=host -t "$CONTAINER_TAG" .
