@@ -14,6 +14,14 @@ variables:
 before_script:
   - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
 
+karmaTests:
+  stage: test
+  image: registry.minthe.net/michael/karma-test-runner/master
+  script:
+    - cd src/main/client
+    - npm i
+    - npm run test -- --browsers ChromeHeadless --watch=false
+
 mvnBuild:
   stage: build
   script:

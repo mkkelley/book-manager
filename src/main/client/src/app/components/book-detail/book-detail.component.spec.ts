@@ -92,6 +92,7 @@ describe('BookDetailComponent', () => {
     });
     fixture = TestBed.createComponent(BookDetailComponent);
     fixture.detectChanges();
+    component = fixture.componentInstance;
     expect(component.storageEnabled).toBeTrue();
     const compiledTemplate = fixture.debugElement.nativeElement;
     const element: Element | null = compiledTemplate.querySelector(
