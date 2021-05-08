@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BookIndexComponent } from './book-index.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,7 +11,7 @@ describe('BookIndexComponent', () => {
   let component: BookIndexComponent;
   let fixture: ComponentFixture<BookIndexComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const mockBookService = jasmine.createSpyObj(['searchBooks']);
     TestBed.configureTestingModule({
       imports: [
