@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -24,7 +23,7 @@ import { DEFAULT_PAGE_SIZE } from '../../app.constants';
   templateUrl: './book-tag-list.component.html',
   styleUrls: ['./book-tag-list.component.scss'],
 })
-export class BookTagListComponent implements OnInit, OnDestroy {
+export class BookTagListComponent implements OnDestroy {
   @Input() public tags: string[];
   @Output() public createBookTag = new EventEmitter<string>();
   @Output() public deleteBookTag = new EventEmitter<string>();
@@ -36,8 +35,6 @@ export class BookTagListComponent implements OnInit, OnDestroy {
   constructor(private tagService: TagService, private router: Router) {
     this.addTagMode = false;
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

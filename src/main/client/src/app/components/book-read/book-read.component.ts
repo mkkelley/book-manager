@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BookRead } from '../../models/book-read';
 
 @Component({
@@ -6,14 +6,12 @@ import { BookRead } from '../../models/book-read';
   templateUrl: './book-read.component.html',
   styleUrls: ['./book-read.component.scss'],
 })
-export class BookReadComponent implements OnInit {
+export class BookReadComponent {
   @Input() bookRead: BookRead;
   @Output() finish = new EventEmitter();
   @Output() delete = new EventEmitter();
 
   constructor() {}
-
-  ngOnInit(): void {}
 
   emitFinish(): void {
     this.finish.emit();
