@@ -9,7 +9,7 @@ variables:
   KUBECONFIG: /etc/deploy/config
   CONTAINER_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   HELM_NAME: book-manager-charts
-  HELM_VERSION: v0.0.6
+  HELM_VERSION: v0.0.9
 
 karmaTests:
   stage: test
