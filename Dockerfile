@@ -1,7 +1,7 @@
 FROM maven:3.6.3-openjdk-15 as build
 COPY pom.xml .
 COPY src src
-RUN mvn clean package
+RUN mvn --no-transfer-progress clean package
 
 FROM openjdk:15-alpine
 RUN apk --no-cache add curl
