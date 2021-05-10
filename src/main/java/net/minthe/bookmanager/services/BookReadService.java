@@ -1,6 +1,7 @@
 package net.minthe.bookmanager.services;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.UUID;
 import net.minthe.bookmanager.controllers.transport.AddBookReadRequest;
 import net.minthe.bookmanager.controllers.transport.FinishBookReadRequest;
@@ -50,5 +51,10 @@ public class BookReadService {
     var bookRead = bookReadRepository.findById(id).orElseThrow();
     bookReadRepository.deleteById(id);
     return bookRead;
+  }
+
+  public Collection<BookRead> getBookReadsForCurrentUser(Long bookId) {
+    return bookReadRepository.getBookReadsByUsernameAndBookIdOrderByCreatedAtDesc(
+        authService.getUsername(), bookId);
   }
 }

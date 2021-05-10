@@ -42,11 +42,6 @@ public class Book extends Auditable {
   @Generated(value = GenerationTime.INSERT)
   private Author author;
 
-  @OneToMany(mappedBy = "bookId")
-  @BatchSize(size = 20)
-  @OrderBy("createdAt DESC")
-  private List<BookRead> bookReads;
-
   private Instant published;
 
   @OneToMany(mappedBy = "bookId")
