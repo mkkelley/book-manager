@@ -25,6 +25,16 @@ export class BookIndexComponent implements OnInit {
   public unfinishedControl = new FormControl(false);
 
   private destroy$ = new Subject();
+  /**
+   * When the user is searching, there can be a bad interaction with the debounce when the
+   * user types a character after the debounce time and before the request and navigation
+   * finishes.
+   *
+   * If this value is non-null, the user has executed a search. If the value changes between the
+   * time that the search starts and the time that we update the box with the value from navigation,
+   * the user has kept typing and we should not update the search box.
+   */
+  private lastSearch: string = null;
 
   constructor(
     private bookService: BookService,
@@ -39,7 +49,11 @@ export class BookIndexComponent implements OnInit {
           ? +paramMap.get('size')
           : DEFAULT_PAGE_SIZE;
       this.tag = paramMap.get('tag');
-      if (paramMap.get('search') !== this.searchControl.value) {
+      if (
+        paramMap.get('search') !== this.searchControl.value &&
+        (this.lastSearch == null ||
+          this.lastSearch === this.searchControl.value)
+      ) {
         this.searchControl.setValue(paramMap.get('search'));
       }
       if (JSON.parse(paramMap.get('unfinished')) !== this.unfinished) {
@@ -53,15 +67,16 @@ export class BookIndexComponent implements OnInit {
     this.newBooks = [];
     this.searchControl.valueChanges
       .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((value) =>
-        this.router.navigate([], {
+      .subscribe((value) => {
+        this.lastSearch = this.searchControl.value;
+        return this.router.navigate([], {
           relativeTo: this.route,
           queryParamsHandling: 'merge',
           queryParams: {
             search: value,
           },
-        })
-      );
+        });
+      });
     this.unfinishedControl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) =>
