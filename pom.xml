@@ -126,7 +126,7 @@
         <version>1.10.0</version>
         <configuration>
           <nodeVersion>v14.8.0</nodeVersion>
-          <npmVersion>6.14.7</npmVersion>
+          <npmVersion>6.14.12</npmVersion>
           <workingDirectory>./src/main/client</workingDirectory>
         </configuration>
         <executions>

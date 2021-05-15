@@ -89,18 +89,6 @@ public class BookManagerApplication {
       this.userDetailsService = userDetailsService;
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-      CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(Collections.singletonList("*"));
-      configuration.setAllowedMethods(Collections.singletonList("*"));
-      configuration.setAllowedHeaders(Collections.singletonList("*"));
-      configuration.setExposedHeaders(Collections.singletonList("X-Auth-Token"));
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      source.registerCorsConfiguration("/**", configuration);
-      return source;
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       if (rememberMeKey == null || "".equals(rememberMeKey)) {
@@ -108,9 +96,6 @@ public class BookManagerApplication {
       }
       http.csrf()
           .disable()
-          .cors()
-          .configurationSource(corsConfigurationSource())
-          .and()
           .httpBasic()
           .and()
           .authorizeRequests()
