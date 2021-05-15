@@ -20,12 +20,12 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
-    "@ng-bootstrap/ng-bootstrap": "^7.0.0",
-    "bootstrap": "^4.5.0",
-    "rxjs": "~6.5.5",
-    "tslib": "^2.0.0",
-    "uuid": "^8.3.0",
-    "zone.js": "~0.10.3"
+    "@ng-bootstrap/ng-bootstrap": "^9.1.1",
+    "bootstrap": "^5.0.1",
+    "rxjs": "^7.0.1",
+    "tslib": "^2.2.0",
+    "uuid": "^8.3.2",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1102.12",
