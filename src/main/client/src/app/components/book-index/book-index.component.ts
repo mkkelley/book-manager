@@ -9,6 +9,11 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE } from '../../app.constants';
 
+export interface NewBook {
+  created: boolean;
+  book: Book;
+}
+
 @Component({
   selector: 'app-book-index',
   templateUrl: './book-index.component.html',
@@ -16,7 +21,7 @@ import { DEFAULT_PAGE_SIZE } from '../../app.constants';
 })
 export class BookIndexComponent implements OnInit {
   public books: PagedResult<Book>;
-  public newBooks: { created: boolean; book: Book }[];
+  public newBooks: NewBook[];
   public page = 0;
   public size = DEFAULT_PAGE_SIZE;
   public tag: string;
@@ -94,7 +99,7 @@ export class BookIndexComponent implements OnInit {
     this.newBooks = [{ created: false, book: null }, ...this.newBooks];
   }
 
-  createBook(x: any, request: AddBookRequest): void {
+  createBook(x: NewBook, request: AddBookRequest): void {
     this.bookService.createBook(request).subscribe((book) => {
       const newBook = this.newBooks.find((nb) => nb === x);
       newBook.book = book;
