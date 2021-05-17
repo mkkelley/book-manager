@@ -7,6 +7,10 @@
 >
 |
 {{ bookRead.audiobook ? "Audio" : "Words" }}
-<button *ngIf="bookRead.finished == null" class="close" (click)="emitDelete()">
+<button
+  *ngIf="bookRead.finished == null"
+  class="btn btn-outline-secondary py-0 px-15 float-end"
+  (click)="emitDelete()"
+>
   &times;
 </button>

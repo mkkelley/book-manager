@@ -1,5 +1,5 @@
 <app-book-tag
-  class="d-flex flex-column justify-content-center ml-2"
+  class="d-flex flex-column justify-content-center ms-2"
   *ngFor="let tag of tags"
   [tag]="tag"
   (deleteBookTag)="deleteBookTag.emit(tag)"
@@ -8,18 +8,24 @@
 <div class="d-flex flex-column justify-content-center">
   <div
     *ngIf="!addTagMode; else tagForm"
-    class="badge badge-light ml-2"
+    class="badge bg-light text-dark ms-2"
     (click)="enterCreateMode()"
   >
     +
   </div>
   <ng-template #tagForm>
+    <mat-autocomplete #auto="matAutocomplete" [autoActiveFirstOption]="true">
+      <mat-option *ngFor="let option of tagTypeahead$ | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
     <input
-      class="ml-2"
+      class="ms-2"
       #tagName
+      [formControl]="tagInputControl"
       (keydown.enter)="submit(tagName.value)"
       placeholder="tag"
-      [ngbTypeahead]="typeahead.bind(this)"
+      [matAutocomplete]="auto"
     />
   </ng-template>
 </div>

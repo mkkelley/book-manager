@@ -16,6 +16,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -52,4 +53,20 @@ public class Book extends Auditable {
   @OneToMany(mappedBy = "bookId", orphanRemoval = true)
   @BatchSize(size = 20)
   private List<BookTag> tags;
+
+  @OneToMany(mappedBy = "bookId")
+  @BatchSize(size = 20)
+  @OrderBy("createdAt DESC")
+  private List<BookRead> bookReads;
+
+  /**
+   * bookReads is mapped on the entity to allow for querying, but accessing it directly is usually
+   * not desired, as authorization filters are not applied.
+   *
+   * See BookReadRepository for methods to get the appropriate BookReads for a Book + User
+   * combination.
+   */
+  public List<BookRead> getBookReads() {
+    throw new NotImplementedException();
+  }
 }

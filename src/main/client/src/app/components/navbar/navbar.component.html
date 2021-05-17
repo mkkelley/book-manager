@@ -1,44 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-  <a class="navbar-brand" [routerLink]="''">Book Manager</a>
-
-  <button
-    class="navbar-toggler"
-    type="button"
-    (click)="isMenuCollapsed = !isMenuCollapsed"
-  >
-    &#9776;
-  </button>
-
-  <div
-    [ngbCollapse]="isMenuCollapsed"
-    class="justify-content-between collapse navbar-collapse"
-  >
-    <ul class="navbar-nav">
-      <ng-container *ngIf="authenticated">
-        <li class="nav-item">
-          <a
-            (click)="isMenuCollapsed = true"
-            class="nav-link"
-            routerLink="/books"
-            routerLinkActive="active"
-            >Books</a
-          >
-        </li>
-      </ng-container>
-    </ul>
-    <ul class="navbar-nav">
-      <li *ngIf="!authenticated" class="nav-item">
-        <a
-          (click)="isMenuCollapsed = true"
-          class="nav-link"
-          routerLink="/login"
-          routerLinkActive="active"
-          >Login</a
-        >
-      </li>
-      <li *ngIf="authenticated" class="nav-item">
-        <a (click)="logout()" class="nav-link"> Logout {{ username() }} </a>
-      </li>
-    </ul>
+<mat-toolbar class="mb-3 flex-wrap">
+  <div class="app-nav-header">
+    Book Manager
   </div>
-</nav>
+  <div>
+    <a
+      class="px-3 app-nav-link"
+      routerLink="/books"
+      routerLinkActive="text-dark"
+      >Books</a
+    >
+  </div>
+  <div class="ms-auto" *ngIf="!authenticated">
+    <a
+      routerLink="/login"
+      class="app-nav-link"
+      routerLinkActive="text-dark text-decoration-none"
+      >Login</a
+    >
+  </div>
+  <div class="ms-auto" *ngIf="authenticated">
+    <button class="btn btn-link" (click)="logout()">
+      Logout {{ username() }}
+    </button>
+  </div>
+</mat-toolbar>

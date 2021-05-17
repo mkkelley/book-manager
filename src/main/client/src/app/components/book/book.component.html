@@ -2,10 +2,10 @@
   <li
     class="list-group-item d-flex flex-row justify-content-between flex-grow-1 flex-wrap"
   >
-    <div class="d-flex flex-row flex-wrap">
+    <div class="d-flex flex-row flex-wrap align-items-center">
       <a [routerLink]="[book.id]">{{ book.title }}</a>
-      <div class="ml-2 ml-md-4">{{ book.author }}</div>
-      <div class="ml-4" *ngIf="book.published != null">
+      <div class="ms-2 ms-md-4">{{ book.author }}</div>
+      <div class="ms-4" *ngIf="book.published != null">
         {{ book.published | date }}
       </div>
       <app-book-tag-list
@@ -14,9 +14,9 @@
         (createBookTag)="createBookTag($event, book)"
       ></app-book-tag-list>
     </div>
-    <div class="d-flex flex-row align-content-center">
+    <div class="d-flex flex-row align-content-center align-items-center">
       <div class="form-check-inline">
-        <label for="audio-{{ book.id }}" class="form-check-label mr-1"
+        <label for="audio-{{ book.id }}" class="form-check-label me-1"
           >Audio</label
         >
         <input
@@ -27,15 +27,25 @@
         />
       </div>
       <div>
-        <button class="close" (click)="newBookRead()">+</button>
+        <button
+          class="btn btn-outline-secondary py-0 px-15 float-end"
+          (click)="newBookRead()"
+        >
+          +
+        </button>
       </div>
-      <div *ngIf="showDelete" class="ml-lg-3 ml-md-2 ml-sm-1">
-        <button class="close" (click)="delete()">&times;</button>
+      <div *ngIf="showDelete" class="ms-lg-3 ms-md-2 ms-sm-1">
+        <button
+          class="btn btn-outline-secondary py-0 px-15 float-end"
+          (click)="delete()"
+        >
+          &times;
+        </button>
       </div>
     </div>
   </li>
 </ul>
-<ul class="list-group list-group-flush ml-lg-5 ml-md-4 ml-sm-3">
+<ul class="list-group list-group-flush ms-lg-5 ms-md-4 ms-sm-3">
   <li class="list-group-item" *ngFor="let read of book.bookReads">
     <app-book-read
       [bookRead]="read"

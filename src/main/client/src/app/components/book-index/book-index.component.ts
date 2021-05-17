@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE } from '../../app.constants';
+import { PageEvent } from '@angular/material/paginator';
 
 export interface NewBook {
   created: boolean;
@@ -28,6 +29,7 @@ export class BookIndexComponent implements OnInit {
   public unfinished: boolean;
   public searchControl = new FormControl('');
   public unfinishedControl = new FormControl(false);
+  public pageSizeOptions = [5, 10, 20, 50];
 
   private destroy$ = new Subject();
   /**
@@ -112,12 +114,13 @@ export class BookIndexComponent implements OnInit {
     this.newBooks = this.newBooks.filter((x) => x !== newBook);
   }
 
-  pageChange(page: number): void {
+  pageChange(pageEvent: PageEvent): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParamsHandling: 'merge',
       queryParams: {
-        page: page,
+        page: pageEvent.pageIndex,
+        size: pageEvent.pageSize,
       },
     });
   }

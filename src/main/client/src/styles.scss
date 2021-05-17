@@ -1,4 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
 
+$badge-padding-y: 0.25em;
+$badge-padding-x: 0.4em;
+
+@use "~@angular/material" as mat;
+@include mat.core();
+
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
+
+// Next two selectors replicate Bootstrap v4 link styles. V5 added back the underline
+a:not([class]) {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button.btn-link {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sr-only {
+  @extend .visually-hidden;
+}
+
+.px-15 {
+  padding-left: 0.43rem !important;
+  padding-right: 0.43rem !important;
+}
+
+.mat-datepicker-content {
+  background-color: #f9f9fa;
+}
+
+.mat-select-panel {
+  background-color: #f9f9fa;
+}
+
+.mat-active {
+  background-color: #b8b8bf;
+}
+
+.mat-autocomplete-panel {
+  background-color: #f9f9fa;
+}

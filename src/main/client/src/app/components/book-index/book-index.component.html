@@ -1,22 +1,24 @@
-<div class="form-group row mx-0">
-  <input
-    [formControl]="searchControl"
-    class="form-control col-lg-3 col-md-6 col-sm-12"
-    placeholder="Title/Author"
-  />
-  <h4 *ngIf="tag" class="ml-2 ml-md-3">
-    <span class="badge badge-light" (click)="removeTagSearch()">
+<div class="form-group row mx-0 mb-3">
+  <div class="col-lg-3 col-md-6 col-sm-12 px-0">
+    <input
+      [formControl]="searchControl"
+      class="form-control col-lg-3 col-md-6 col-sm-12"
+      placeholder="Title/Author"
+    />
+  </div>
+  <h4 *ngIf="tag" class="ms-2 ms-md-3 col-auto p-0">
+    <span class="badge bg-light text-dark" (click)="removeTagSearch()">
       {{ tag }}
       &times;
     </span>
   </h4>
   <div
-    class="d-flex flex-row form-check-inline ml-1 ml-md-2 align-content-center"
+    class="col-auto d-flex flex-row form-check-inline align-items-center align-content-center ms-1 ms-md-2 px-0 align-content-center"
   >
-    <label class="form-check-label" for="unfinished">Unfinished</label>
+    <label class="form-check-label mb-0" for="unfinished">Unfinished</label>
     <input
       type="checkbox"
-      class="form-check ml-1 ml-md-2"
+      class="form-check ms-1 ms-md-2 my-0"
       name="unfinished"
       id="unfinished"
       [formControl]="unfinishedControl"
@@ -26,7 +28,12 @@
 <ng-container *ngIf="books">
   <ul class="list-group">
     <li class="list-group-item">
-      <button class="close float-left" (click)="newBook()">+</button>
+      <button
+        class="btn btn-outline-secondary py-0 px-15 float-start"
+        (click)="newBook()"
+      >
+        +
+      </button>
     </li>
   </ul>
   <ng-container *ngFor="let newBook of newBooks">
@@ -49,12 +56,13 @@
     [showDelete]="false"
   ></app-book>
   <div class="d-flex flex-row justify-content-center">
-    <ngb-pagination
-      [collectionSize]="books.totalElements"
+    <mat-paginator
       [pageSize]="size"
-      [page]="page + 1"
-      (pageChange)="pageChange($event - 1)"
-      [maxSize]="5"
-    ></ngb-pagination>
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      [pageIndex]="page"
+      [length]="books.totalElements"
+      (page)="pageChange($event)"
+    ></mat-paginator>
   </div>
 </ng-container>

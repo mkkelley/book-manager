@@ -17,6 +17,7 @@ import {
 import { TagService } from '../../services/tag.service';
 import { Router } from '@angular/router';
 import { DEFAULT_PAGE_SIZE } from '../../app.constants';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-book-tag-list',
@@ -30,6 +31,8 @@ export class BookTagListComponent implements OnDestroy {
   @ViewChild('tagName') public tagName: ElementRef;
   private destroy$ = new Subject<void>();
 
+  public tagInputControl: FormControl;
+  public tagTypeahead$: Observable<string[]>;
   public addTagMode: boolean;
 
   constructor(private tagService: TagService, private router: Router) {
@@ -42,10 +45,13 @@ export class BookTagListComponent implements OnDestroy {
 
   submit(tag: string): void {
     this.addTagMode = false;
+    this.tagInputControl = null;
     this.createBookTag.emit(tag);
   }
 
   enterCreateMode(): void {
+    this.tagInputControl = new FormControl('');
+    this.tagTypeahead$ = this.typeahead(this.tagInputControl.valueChanges);
     this.addTagMode = true;
     setTimeout(() => this.tagName.nativeElement.focus());
   }

@@ -19,6 +19,7 @@ export class NewBookFormComponent implements OnInit {
   @Output() newBook = new EventEmitter<AddBookRequest>();
   @Output() remove = new EventEmitter();
   bookForm: FormGroup;
+  authorTypeahead$: Observable<string[]>;
 
   constructor(private authorService: AuthorService) {}
 
@@ -28,15 +29,18 @@ export class NewBookFormComponent implements OnInit {
       authorName: new FormControl(''),
       published: new FormControl(''),
     });
+
+    this.authorTypeahead$ = this.typeahead(
+      this.bookForm.controls.authorName.valueChanges
+    );
   }
 
   submit(): void {
-    const date: { day: number; month: number; year: number } = this.bookForm
-      .controls.published.value;
+    const date: Date = this.bookForm.controls.published.value;
     this.newBook.emit({
       title: this.bookForm.controls.title.value,
       authorName: this.bookForm.controls.authorName.value,
-      published: new Date(date.year, date.month - 1, date.day).getTime(),
+      published: date instanceof Date ? date.getTime() : null,
     });
   }
 
