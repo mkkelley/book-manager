@@ -9,6 +9,8 @@ import net.minthe.bookmanager.services.BookReadService;
 import net.minthe.bookmanager.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,7 @@ public class BookController {
       BookFilter filter,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size) {
-    var pageRequest = PageRequest.of(page, size);
+    var pageRequest = PageRequest.of(page, size, Sort.by(Direction.DESC, "createdAt"));
     var searchResult = bookService.searchBooks(filter, pageRequest);
     return searchResult.getBooks().map(b -> new BookDto(b, searchResult.getBookReads()));
   }

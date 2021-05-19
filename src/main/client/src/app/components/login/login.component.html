@@ -1,4 +1,4 @@
-<div *ngIf="loginFailed">Login failed.</div>
+<div *ngIf="loginFailed$ | async">Login failed.</div>
 <form [formGroup]="loginForm" (submit)="submit()">
   <div class="form-group">
     <input

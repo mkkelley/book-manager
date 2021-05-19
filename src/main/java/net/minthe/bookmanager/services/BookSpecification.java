@@ -58,8 +58,6 @@ public class BookSpecification implements Specification<Book> {
           .add(criteriaBuilder.equal(root.join("tags").join("tag").get("tag"), filter.getTag()));
     }
 
-    query.orderBy(criteriaBuilder.desc(root.get("createdAt")));
-
     if (p.getExpressions().size() == 0) {
       return null;
     }

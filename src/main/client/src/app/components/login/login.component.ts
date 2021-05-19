@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
-  public loginFailed: boolean;
+  public loginFailed$: Subject<boolean>;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
       password: new FormControl(''),
     });
 
-    this.loginFailed = false;
+    this.loginFailed$ = new Subject<boolean>();
+    this.loginFailed$.next(false);
   }
 
   submit(): void {
@@ -34,10 +36,10 @@ export class LoginComponent implements OnInit {
       .authenticate(username, password)
       .subscribe((result) => {
         if (result === true) {
-          this.loginFailed = false;
+          this.loginFailed$.next(false);
           this.router.navigate(['/']);
         } else {
-          this.loginFailed = true;
+          this.loginFailed$.next(true);
         }
       });
   }

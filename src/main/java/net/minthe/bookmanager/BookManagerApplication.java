@@ -1,6 +1,7 @@
 package net.minthe.bookmanager;
 
-import java.util.Collections;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import net.minthe.bookmanager.models.User;
 import org.apache.tomcat.util.http.SameSiteCookies;
@@ -18,15 +19,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.session.web.http.CookieHttpSessionIdResolver;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.session.web.http.HttpSessionIdResolver;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
@@ -89,6 +88,14 @@ public class BookManagerApplication {
       this.userDetailsService = userDetailsService;
     }
 
+    private AuthenticationSuccessHandler successHandler() {
+      return (request, response, authentication) -> {
+        var responseBody = new ObjectMapper().writeValueAsString(authentication);
+        response.getWriter().write(responseBody);
+        response.setStatus(HttpServletResponse.SC_OK);
+      };
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       if (rememberMeKey == null || "".equals(rememberMeKey)) {
@@ -96,10 +103,12 @@ public class BookManagerApplication {
       }
       http.csrf()
           .disable()
-          .httpBasic()
+          .formLogin()
+          .loginPage("/api/login")
+          .successHandler(successHandler())
           .and()
           .authorizeRequests()
-          .antMatchers("/index.html", "/", "/home", "/user", "/config", "/*.js", "/*.css")
+          .antMatchers("/index.html", "/api/login", "/", "/home", "/user", "/config", "/*.js", "/*.css")
           .permitAll()
           .antMatchers("/api/**")
           .authenticated()

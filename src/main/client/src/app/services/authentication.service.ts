@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, finalize, first, map, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '../models/authentication-response';
@@ -31,18 +31,18 @@ export class AuthenticationService {
             `${this.configurationService.getConfiguration().apiBaseUrl}user`,
             { observe: 'response' }
           )
-          .subscribe(
-            (response: HttpResponse<AuthenticationResponse>) => {
+          .subscribe({
+            next: (response: HttpResponse<AuthenticationResponse>) => {
               this.isAuthenticated = true;
               this.authenticationResponse = response.body;
               this.loadingSubject.next(false);
             },
-            (_) => {
+            error: (_) => {
               this.isAuthenticated = false;
               this.router.navigate(['/login']);
               this.loadingSubject.next(false);
-            }
-          );
+            },
+          });
       });
   }
 
@@ -56,13 +56,16 @@ export class AuthenticationService {
 
   public authenticate(username: string, password: string): Observable<boolean> {
     this.loadingSubject.next(true);
+
+    const formData = new FormData();
+    formData.set('username', username);
+    formData.set('password', password);
+
     return this.httpClient
-      .get<AuthenticationResponse>(
-        this.configurationService.getConfiguration().apiBaseUrl + 'user',
+      .post<AuthenticationResponse>(
+        this.configurationService.getConfiguration().apiBaseUrl + 'login',
+        formData,
         {
-          headers: new HttpHeaders({
-            Authorization: 'Basic ' + btoa(`${username}:${password}`),
-          }),
           observe: 'response',
         }
       )
