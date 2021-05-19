@@ -10,6 +10,7 @@ import java.util.UUID;
 import net.minthe.bookmanager.controllers.transport.CreateBookNoteRequest;
 import net.minthe.bookmanager.models.BookNote;
 import net.minthe.bookmanager.repositories.BookNoteRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,10 +28,11 @@ public class BookNoteServiceTest {
 
   private CreateBookNoteRequest createBookNoteRequest;
   private BookNoteService service;
+  private AutoCloseable mockClose;
 
   @BeforeEach
   public void setup() {
-    MockitoAnnotations.initMocks(this);
+    mockClose = MockitoAnnotations.openMocks(this);
     service = new BookNoteService(bookNoteRepository, authService);
     Random random = new Random();
     createBookNoteRequest = new CreateBookNoteRequest();
@@ -44,6 +46,11 @@ public class BookNoteServiceTest {
 
     given(bookNoteRepository.save(any(BookNote.class)))
         .willAnswer(invocation -> invocation.getArgument(0));
+  }
+
+  @AfterEach
+  public void tearDown() throws Exception {
+    mockClose.close();
   }
 
   @Test

@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 import java.util.Optional;
 import java.util.UUID;
 import net.minthe.bookmanager.models.BookRead;
 import net.minthe.bookmanager.repositories.BookReadRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,10 +24,11 @@ public class BookReadAuthorizationServiceTest {
   @Mock
   private AuthService authService;
   private UUID uuid;
+  private AutoCloseable mockClose;
 
   @BeforeEach
   public void setup() {
-    MockitoAnnotations.initMocks(this);
+    mockClose = MockitoAnnotations.openMocks(this);
     bookReadAuthorizationService = new BookReadAuthorizationService(bookReadRepository,
         authService);
     uuid = UUID.randomUUID();
@@ -37,6 +40,11 @@ public class BookReadAuthorizationServiceTest {
     given(authService.getUsername()).willReturn("username");
     given(authService.isAdmin()).willReturn(false);
     given(bookReadRepository.findById(any())).willReturn(java.util.Optional.of(read));
+  }
+
+  @AfterEach
+  public void tearDown() throws Exception {
+    mockClose.close();
   }
 
   @Test
