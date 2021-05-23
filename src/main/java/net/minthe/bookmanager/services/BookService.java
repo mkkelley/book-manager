@@ -54,7 +54,7 @@ public class BookService {
     var book = new Book();
     book.setAuthor(author);
     book.setAuthorId(author.getId());
-    book.setTitle(request.getTitle());
+    book.setTitle(request.getTitle().getTitle());
     book.setPublished(request.getPublished().map(Instant::ofEpochMilli).orElse(null));
     bookRepository.save(book);
 
@@ -70,7 +70,7 @@ public class BookService {
     var author = authorService.getOrCreate(request.getAuthorName());
     book.setAuthor(author);
     book.setAuthorId(author.getId());
-    book.setTitle(request.getTitle());
+    book.setTitle(request.getTitle().getTitle());
     book.setPublished(request.getPublished().map(Instant::ofEpochMilli).orElse(null));
     return bookRepository.save(book);
   }

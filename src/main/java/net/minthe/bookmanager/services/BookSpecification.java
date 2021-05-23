@@ -8,6 +8,7 @@ import javax.persistence.criteria.Root;
 import net.minthe.bookmanager.models.Book;
 import net.minthe.bookmanager.models.BookRead;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /** Created by Michael Kelley on 9/13/2020 */
@@ -20,10 +21,10 @@ public class BookSpecification implements Specification<Book> {
 
   @Override
   public Predicate toPredicate(
-      Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+      @NonNull Root<Book> root, @NonNull CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
     var p = criteriaBuilder.conjunction();
-    if (filter.getSearch() != null && !filter.getSearch().equals("")) {
-      var escapedSearch = filter.getSearch().replace("\\", "\\\\").replace("%", "\\%");
+    if (filter.getSearch() != null && !filter.getSearch().getTitle().equals("")) {
+      var escapedSearch = filter.getSearch().getTitle().replace("\\", "\\\\").replace("%", "\\%");
       p.getExpressions()
           .add(
               criteriaBuilder.or(

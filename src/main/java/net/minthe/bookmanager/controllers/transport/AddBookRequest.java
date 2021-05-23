@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AddBookRequest {
-  @NotNull @NotEmpty private String title;
+  @NotNull @NotEmpty private BookTitle title;
   @NotNull @NotEmpty private String authorName;
   private Long published;
 
